@@ -1,0 +1,1857 @@
+[Hejun Wong] 15:05:14
+One point is on swappiness.
+
+[Hejun Wong] 15:05:30
+Okay. So here, MongoDB performs best when Something can be avoided.
+
+[Hejun Wong] 15:05:37
+Are kept to a minimal. Okay, so sword occurs when you don't have enough memory.
+
+[Hejun Wong] 15:05:46
+And salt prevents you from facing the out of memory error Because when you're When you don't have enough memory, SOC will come in And you will start storing those data that you previously needed to store in memory into this sort space.
+
+[Hejun Wong] 15:06:05
+So it prevents your system from crashing. But the thing is, because this is not memory but you're this right it becomes resu So we don't want to encourage MongoDB to keep using the sword space.
+
+[Hejun Wong] 15:06:18
+So we will sort we will set the soap So penis level of your virtual machine to a very low number Okay, so if you look at this instruction reduce that to like one So set your VMs to one or zero.
+
+[Hejun Wong] 15:06:38
+Okay, so setting it to one right it's only to avoid your own memory problems But if you set to a higher number, it just tells the OS kernel to use this swap.
+
+[Hejun Wong] 15:06:50
+Space more often. And by default, it's on Managing greenhouse distribution. So we want to change this value to 1.
+
+[Hejun Wong] 15:07:02
+Okay.
+
+[Hejun Wong] 15:07:06
+So that is on swap. Okay, memory is quite similar to above.
+
+[Hejun Wong] 15:07:13
+Thanks, Abby. Document matrix you also don't really need to monitor asserts is something that you can monitor if you can monitor if Let's see.
+
+[Hejun Wong] 15:07:26
+The application site is showing a lot of error. So when the application site is training of error But it is not a database issue.
+
+[Hejun Wong] 15:07:38
+You will see that you will see that the users spike so so there are a few lines here There's one line that will represent the average rate of users a search per second so these are errors that are generated
+
+[Hejun Wong] 15:07:58
+By your application. Okay, so it can be like a duplicate key error or a client-side application error which is not related to your database Okay, so this is something that you can monitor when your application developers are complaining that hey how come
+
+[Hejun Wong] 15:08:18
+I'm getting this error but actually it might not be a database error. It might be an issue on their end.
+
+[Hejun Wong] 15:08:25
+Okay so tickets not very relevant for MongoDB 7.0 and above.
+
+[Hejun Wong] 15:08:30
+It's meaningful. 6.0 and big old.
+
+[Hejun Wong] 15:08:36
+Replication outlook window. Now it's 172.52.
+
+[Hejun Wong] 15:08:40
+Point four days. So for this value, we recommend setting it to more than three days, so 72 hours Why three days is because let's see it now.
+
+[Hejun Wong] 15:08:56
+It's a Friday evening. Then Tony and Gigi.
+
+[Hejun Wong] 15:09:00
+They have gone home. But suddenly there's an issue occurring on your database and maybe one of your notes starts to one of your secondary notes starts to face an error And you cannot get the latest data from the primary node.
+
+[Hejun Wong] 15:09:18
+Then you'll see that the replication lag increases Okay, so when Secondary note falls off the op log, which means that it goes offline for more than the overlap window.
+
+[Hejun Wong] 15:09:35
+It is no longer able to catch up with the primary nodes on block.
+
+[Hejun Wong] 15:09:40
+Okay, so when that happens right The secondary node will fall off the outblock and you will need to perform an initial sync to sync the data from the primary node again But the initial thing is the initial thing highly intensive resource intensive process.
+
+[Hejun Wong] 15:09:59
+So we will always want to avoid initial sync format happening And to avoid your initial sync from happening, you need to size your odd block.
+
+[Hejun Wong] 15:10:10
+Window appropriately so it has to be more than three days how to calculate the alert window you have to look at another nitri.
+
+[Hejun Wong] 15:10:21
+Called Outlook GB per hour. Okay, so above GB per hour will tell you how much outblock data you're consuming per hour.
+
+[Hejun Wong] 15:10:34
+So how much data you are generating within your Outlook So what I will do is always if i know let's say my cluster peak period is on Wednesday from say 7 p.m. To 10 p.m.
+
+[Hejun Wong] 15:10:53
+I will go check how much outblock is generated during that time period And I will multiply by 72.
+
+[Hejun Wong] 15:11:02
+So that will give me the three days worth of window and i was set the upload window for my cluster how to set my alert window on my cluster For endless years.
+
+[Hejun Wong] 15:11:14
+Same thing is under the configuration panel
+
+[Hejun Wong] 15:11:21
+So under additional settings here Here is where you can set your minimum outlook window so you can see like say two hours
+
+[Hejun Wong] 15:11:31
+Okay, so here is where you can set your automobile window for community edition, I think you can define like the overlook size of what we do aside now.
+
+[Hejun Wong] 15:11:46
+So take the peak period the highest amount of outblock data generated per hour as that baseline so that you have sufficient buffer.
+
+[Hejun Wong] 15:12:04
+Okay, so we've covered all our window. Next will be on odd counters So all countries, usually I will put it as my first metric And I will put it above my CPU utilization because With my all counters i can
+
+[Hejun Wong] 15:12:19
+Is we see whether there's a spike in operations that is causing the spike in CPU utilization.
+
+[Hejun Wong] 15:12:27
+Yeah, okay, so all contest will tell you how many queries are being ran at that time, how many updates, how many delete I mean, you get more, how many insertions?
+
+[Hejun Wong] 15:12:35
+And all the other comments that are being ran will be parked under the command.
+
+[Hejun Wong] 15:12:41
+Mitri. Okay. Yeah.
+
+[Hejun Wong] 15:12:47
+There's also one more for TTR injection, TTR deletion. So if there's large amount of TTL, decisions being carried out.
+
+[Hejun Wong] 15:12:54
+He will eat up a lot of your resources. Because remember, because remember Every time a data is deleted.
+
+[Hejun Wong] 15:13:01
+You do not just have to update your data within the disk, you have to update all the relevant indexes that contains that piece of information also Okay, so that's for our TTR locations.
+
+[Hejun Wong] 15:13:19
+So those are the key matrix that our monitor.
+
+[Hejun Wong] 15:13:25
+And that's how I usually monitor whether my customer or my customers clusters are healthy Any questions?
+
+[Tony Lin Yi-Siang] 15:13:41
+Can you explain the check cash ratio again?
+
+[Hejun Wong] 15:13:47
+Okay.
+
+[Tony Lin Yi-Siang] 15:13:52
+The blue line and the blue line Green light is… Okay, good.
+
+[Hejun Wong] 15:13:58
+Okay, so the blue line is your cash flow ratio in a normal cluster, it should be at about 80%.
+
+[Tony Lin Yi-Siang] 15:14:00
+Okay.
+
+[Hejun Wong] 15:14:08
+Okay, so when it's 80% Here.
+
+[Hejun Wong] 15:14:16
+When he said 80%, it indicates that you're working set which means your frequently assess indexes as well, frequently assessed documents is serving your read and write operations most of your read and write operations And when that happens, it means that your operations don't have to go to the disk to retrieve like
+
+[Hejun Wong] 15:14:38
+Your documents. And it doesn't have to go to the dismisses very fast.
+
+[Hejun Wong] 15:14:44
+So 80% cash flow ratio is a healthy No progress for the dirty field ratio is the amount of data So 30… Bytes means the data has been change. So it can be a new document. It can be a document that has been amended
+
+[Hejun Wong] 15:15:05
+A document that has been deleted. So all these will go into this the device.
+
+[Hejun Wong] 15:15:12
+So it will take up space in your memory So before it is committed to this it will be inside this dirty buys dirty cache.
+
+[Hejun Wong] 15:15:25
+So when it comes to eviction.
+
+[Hejun Wong] 15:15:30
+This dirty data to this so you write the changes to this Okay, so a healthy state is when your dirty fuel ratio is below 5%.
+
+[Hejun Wong] 15:15:44
+Above that is… is a scenario where you are likely experiencing Russia more of rag operations And that because of the amount of write operations your cluster cannot write all this dirty data to this fast enough.
+
+[Hejun Wong] 15:16:06
+And when you cannot commit all the changes to this fast enough.
+
+[Hejun Wong] 15:16:09
+It might start to stall your slowdown throttle your ride operations.
+
+[Hejun Wong] 15:16:16
+Then your whole application site will start to feel the impact.
+
+[Hejun Wong] 15:16:21
+So when it hits like five to twenty percent it might also start to enlist other MongoDB processes to come in to help with the eviction.
+
+[Hejun Wong] 15:16:31
+So there'll be more process to help evict the data from memory to this But when that happens, it also means that all this process cannot process other operations and it means that your whole customer will slow down.
+
+[Hejun Wong] 15:16:47
+Yeah. So there's a concept of plural control in MongoDB.
+
+[Hejun Wong] 15:16:52
+I'm not sure whether it's documented
+
+[Hejun Wong] 15:16:58
+Okay, so…
+
+[Hejun Wong] 15:17:06
+When your secondary falls behind your primary by like let's say 10 seconds, 10 to 20 seconds MongoDB might activate this flow control.
+
+[Hejun Wong] 15:17:19
+Case away, I gave it full control it will start to throttle your rag operations.
+
+[Hejun Wong] 15:17:28
+Okay, so the whole idea is that It shuttles the So here I am.
+
+[Hejun Wong] 15:17:36
+If he meets the right. Number of tickets issued per second And the whole idea is that With full control enabled and engaged.
+
+[Hejun Wong] 15:17:49
+I will accept less right operations and I hope that because I accept US1 operations, my secondary notes can take the time to hurry up, catch up with my primary note.
+
+[Hejun Wong] 15:17:59
+So as to reduce the replication lag.
+
+[Hejun Wong] 15:18:04
+Okay, so… a common sin that occurs is when just now when you see our dirty cash ratio hitting like 20%.
+
+[Hejun Wong] 15:18:19
+You can a common thing that is actually occurring behind is also that Fugal control has been engaged So when full control is engaged your rights are all being throttled So it's slow so that's one single point. The other point is also MongoDB will use the other threads to help with the eviction.
+
+[Hejun Wong] 15:18:39
+Then it adds on to the soonestness. So at that point in time your application And your database will all slow down.
+
+[Hejun Wong] 15:18:47
+Yeah so you will need to find out what is the operation that is causing all the resources to be stuck It can be a lack of resources on your cluster, you might need to scale up Or it might just be
+
+[Hejun Wong] 15:19:02
+Road operation that you need to queue. And once you kill the operation then your customer will be okay.
+
+[Hejun Wong] 15:19:08
+Yeah, so you just need to find out what's the cost to that situation.
+
+[Hejun Wong] 15:19:17
+Certainly. The article that i share with you all And we curse these to us.
+
+[Hejun Wong] 15:19:25
+Oh, this right so this article, you can take a look at it. It will tell you what is good and what is bad
+
+[Hejun Wong] 15:19:35
+Okay, so it covers a few common matrix.
+
+[Hejun Wong] 15:19:42
+Normalized system cpu normal set cpu induced latency.
+
+[Hejun Wong] 15:19:48
+Okay, so it's all here. Can have a good, I think it's very important for database administrators
+
+[Hejun Wong] 15:20:00
+Okay, so with all this signals right you can also create alerts on your end So for MongoDB, it might be one of the courses that we'll be going through. We can create alerts on our cluster so that we start receiving
+
+[Hejun Wong] 15:20:18
+Oh, that's whatever our threshold is. Breach so for example the right here on the top right corner you see the bell this is the alerts that we can configure.
+
+[Hejun Wong] 15:20:29
+So by default, it comes with quite a bit of quite a number of alerts already But you can create your own.
+
+[Hejun Wong] 15:20:37
+So usually it's where you can define different alerts so for example just now replication lag.
+
+[Hejun Wong] 15:20:46
+I can create a an alert on reputation, right?
+
+[Hejun Wong] 15:20:55
+Okay so here i can create an alert on replication right so Thanks again.
+
+[Hejun Wong] 15:21:05
+Yeah, so these are all possible and you can even say above that's against for how many minutes?
+
+[Hejun Wong] 15:21:13
+Then send like an email to everyone in the ALOS project.
+
+[Hejun Wong] 15:21:19
+So these are all possible with adverse as well as ops manager.
+
+[Hejun Wong] 15:21:24
+Okay so you can configure Atlas to interact with.
+
+[Hejun Wong] 15:21:30
+Pagerduty so you can send out sms to your database team Prometheus, Data.
+
+[Hejun Wong] 15:21:38
+And even like cert and like custom white hooks So one of my customers we are using So I actually set up my webhook so that i Yeah, let me see if there's anything sensitive
+
+[Tao Song] 15:22:01
+So kales off screening so it's already inside.
+
+[Hejun Wong] 15:22:04
+Oh, okay, y'all use the energy. Okay, okay. Okay, good. Yeah, so using webhooks, you can configure your custard to send out alerts to other platforms that are not natively supported here
+
+[Hejun Wong] 15:22:21
+Excellent. These are What I wanted to share with you guys on Matrix?
+
+[Hejun Wong] 15:22:31
+So do you have other questions for me? Or this is the free tier one so the number of matrix that we can see is very little
+
+[Hejun Wong] 15:22:46
+Okay, then we have that let's Continue.
+
+[Hejun Wong] 15:22:54
+Okay, so profiler will show you skill operations that exceed the soil ms threshold.
+
+[Hejun Wong] 15:23:01
+And you can click into the query to see details of your query that single operation.
+
+[Hejun Wong] 15:23:09
+Okay, so now let's do uh quick quiz.
+
+[Hejun Wong] 15:23:18
+So get ready your phones.
+
+[Hejun Wong] 15:23:34
+So let's start our kahud.
+
+[Hejun Wong] 15:24:07
+That's cool.
+
+[Hejun Wong] 15:24:27
+Nice. That's right, Majin. 1,024 lines of log entries test the get your comment that will retrieve the With us.
+
+[Hejun Wong] 15:24:40
+Thanks. Okay, Eugene Ali.
+
+[Hejun Wong] 15:24:44
+Is this true or false?
+
+[Hejun Wong] 15:24:50
+Okay. Most of you got it correct. So next space equals to your database name dot collection name.
+
+[Hejun Wong] 15:25:00
+Talking in the lead.
+
+[Hejun Wong] 15:25:20
+Well done. I already got it correct. The only three valid profiling levels are zero which is by default is zero one and two so one will capture so operations that exceed your soul millisecond threshold And two, we'll capture all operations
+
+[Hejun Wong] 15:25:38
+So only enable profiling where there's a good reason to because it takes up a lot of your resources.
+
+[Hejun Wong] 15:25:51
+Still Tony in the lead?
+
+[Hejun Wong] 15:26:10
+Well done. That's right. We cannot find any useful operations within the activity feed.
+
+[Hejun Wong] 15:26:19
+So he has taken over. Last question.
+
+[Hejun Wong] 15:26:46
+Oh, well done. That's right. So we have our correction scan review your query.
+
+[Hejun Wong] 15:26:53
+And create the necessary indexes According to the ESL diagram.
+
+[Hejun Wong] 15:27:05
+Congrats to your lead. Song Tao.
+
+[Hejun Wong] 15:27:14
+Oh, Tommy.
+
+[Hejun Wong] 15:27:18
+So that means the last question everybody answered very fast.
+
+[Hejun Wong] 15:27:33
+Coming back to the… queso design everyone knows.
+
+[Hejun Wong] 15:27:37
+1,04 nights. What about second question?
+
+[Hejun Wong] 15:27:44
+But what does the profiler do when it's enabled with profiling level one comma two.
+
+[Tony Lin Yi-Siang] 15:28:22
+B.
+
+[Hejun Wong] 15:28:23
+Yes, B is correct.
+
+[Hejun Wong] 15:28:29
+I believe there are two more.
+
+[Tony Lin Yi-Siang] 15:28:32
+E.
+
+[Hejun Wong] 15:28:34
+Yes, he is correct, right?
+
+[Tao Song] 15:28:50
+Okay.
+
+[Hejun Wong] 15:28:52
+No, A is not because this is profiling level one we would not record all the right operations.
+
+[Hejun Wong] 15:29:01
+It will only record sew operations.
+
+[Hejun Wong] 15:29:16
+I think sometime you are muted.
+
+[Tao Song] 15:29:20
+I thought it was at that level. So it's level one than two milliseconds.
+
+[Hejun Wong] 15:29:25
+Yes, level one, two milliseconds.
+
+[Hejun Wong] 15:29:30
+So the answer is actually C. So B, C, and E.
+
+[Hejun Wong] 15:29:34
+Okay, so it will lock. Operations that took more than two milliseconds in your system not profile collection.
+
+[Hejun Wong] 15:29:42
+Sls in your log file. So you can cause large amount of right good into your database so always be careful when you enable your profiling level
+
+[Hejun Wong] 15:29:56
+Okay, so each of these are likely causes of excessive CPU usage.
+
+[Tony Lin Yi-Siang] 15:30:04
+A.
+
+[Hejun Wong] 15:30:06
+Yes.
+
+[Prayogi Tio] 15:30:22
+E.
+
+[Hejun Wong] 15:30:24
+Yes.
+
+[Hejun Wong] 15:30:29
+Dia.
+
+[Prayogi Tio] 15:30:32
+Ruffle.
+
+[Hejun Wong] 15:30:34
+Bravo. Yeah.
+
+[Hejun Wong] 15:30:40
+Just now we also mentioned like authentication is actually quite a cpu intensive operation.
+
+[Hejun Wong] 15:30:45
+So in general, A, B, C, and E.
+
+[Hejun Wong] 15:30:53
+Okay, so as a recap we went through how we can what are the logs that MongoDB?
+
+[Hejun Wong] 15:31:04
+Stars where can we retrieve them And how can we retrieve them?
+
+[Hejun Wong] 15:31:11
+How can we analyze them? We can first ingest it into a collection Or we can just query the raw log file.
+
+[Hejun Wong] 15:31:19
+Another way is also to query using a tool such as Mongolizer.
+
+[Hejun Wong] 15:31:26
+Then… we also look at performance advisor real-time performance panel our career profaler, career insights And we also went through the list of important metrics.
+
+[Hejun Wong] 15:31:39
+That we can use to monitor our database cluster.
+
+[Hejun Wong] 15:31:45
+Okay, so with that, are there any other questions that you guys may have?
+
+[Tony Lin Yi-Siang] 15:31:51
+In the previous page why use JavaScript on the server called CPU usage
+
+[Hejun Wong] 15:31:59
+Chisel?
+
+[Hejun Wong] 15:32:04
+When MongoDB was first
+
+[Hejun Wong] 15:32:09
+Acquired. What they did was actually using like JavaScript on the server to achieve like functionalities such as group your data to aggregate your data to sum your data So a lot of these operations Heidi, CPU intensive.
+
+[Hejun Wong] 15:32:31
+And that's why we created the aggregation pipeline. So we have aggregation pipeline it helps to reduce this CPU utilization But there are also some remaining other JavaScript functions that we still enable on our servers.
+
+[Hejun Wong] 15:32:49
+But those functions can still cause SAC CPU utilization.
+
+[Hejun Wong] 15:32:54
+If you go into Atlas. One of the configuration we can actually do is actually prevent users to run server-side JavaScript.
+
+[Hejun Wong] 15:33:12
+Cases like of where career operators your map review so and so forth So if we disable this then it will help to ensure none of these server-side JavaScript functions can run on your cluster which reduces the possibility of it hitting your CPU utilization.
+
+[Hejun Wong] 15:33:40
+So we always recommend using the aggregation pipe in the United States.
+
+[Hejun Wong] 15:33:47
+Yeah. Any other questions?
+
+[Hejun Wong] 15:34:00
+Okay, if all good. I'll see you guys in 15 minutes time so
+
+[Hejun Wong] 15:34:09
+350.
+
+[Hejun Wong] 15:52:08
+Okay, final topic for today We'll do a quick introduction to analyst search and vector search.
+
+[Hejun Wong] 15:52:15
+We wouldn't be diving too deep into our search. And vector search so just like skimming the surface of these two topics because it can be quite deep So let's go ahead and get started.
+
+[Hejun Wong] 15:52:29
+So we learn about our research, how to set up error search index what is vector search? How can we set up the vector search index?
+
+[Hejun Wong] 15:52:39
+And some other use cases for vector search such as RAC.
+
+[Hejun Wong] 15:52:44
+And finally, we end off with a dedicated search nodes where we can isolate our search what will to these search notes.
+
+[Hejun Wong] 15:52:53
+So that our main database cluster can operate optimally and we have a separate nodes to handle all our search queries.
+
+[Hejun Wong] 15:53:05
+So let's start with EverSearch. So ever search is an addition on top of our MongoDB database We should also have to create indexes to support search.
+
+[Hejun Wong] 15:53:19
+Using Apache lousin. So it is due on top of losing.
+
+[Hejun Wong] 15:53:24
+So it allows us to make Additional searchable indexes which are stored in a different format And it is optimized for relevant searching.
+
+[Hejun Wong] 15:53:37
+So even though this is something that can be built and configured yourself with a self-hosted MongoDB, it is complicated to do well.
+
+[Hejun Wong] 15:53:46
+So many of our users have moved to adverse to use this new search capabilities.
+
+[Hejun Wong] 15:53:53
+And often, if they don't want to use EverSearch, they will have to set up their own Elasticsearch.
+
+[Hejun Wong] 15:54:00
+And you will have to pay additional infrastructure for that. So there's no additional cost for you if you are to use another search But if you are to spin up a dedicated search node then that's where the additional cost is
+
+[Hejun Wong] 15:54:15
+But if you look at They are not too expensive So to enable such notes
+
+[Hejun Wong] 15:54:27
+Here. I've already enabled.
+
+[Hejun Wong] 15:54:31
+Through session notes. Okay so here you can see here minimum i will need two search nodes per region
+
+[Hejun Wong] 15:54:44
+And to look at the search tier the pricing of a search node is about 15 cents per hour for the smallest search node.
+
+[Hejun Wong] 15:54:53
+And for the biggest one, it's $4 per hour. Okay, so usually you don't need such a huge such cluster.
+
+[Hejun Wong] 15:55:03
+You can also choose between a high cpu sectional or low cpu, which is a lot cheaper Okay, so the pricing of it is a lot cheaper as compared to your base MongoDB cluster.
+
+[Hejun Wong] 15:55:20
+Okay, so these are search notes.
+
+[Hejun Wong] 15:55:26
+Okay, so best of all, everything is integrated And yeah, fully managed by MongoDB. There's no additional licensing cost that you need to pay and there's no like you don't need to split the support elastic or mongoDB.
+
+[Hejun Wong] 15:55:45
+So if you use a search our support engineers can tackle those search questions or any search issues that you're facing as well.
+
+[Hejun Wong] 15:55:55
+Okay, so what do we mean by search? So when we perform a database query, we actually know exactly what we want.
+
+[Hejun Wong] 15:56:05
+Whereas when we use alert search we are open to the unknown if you are open to suggestions.
+
+[Hejun Wong] 15:56:12
+So when we run a database query like find a movie title that is Raising Arizona we know that we are finding a movie that with the title exactly raising arizona And if we were to find In this manner, we are finding a title which contains the phrase raising Arizona.
+
+[Hejun Wong] 15:56:38
+However, it will do over search on these raising arizona tax we are open to different variations of raising Arizona or both?
+
+[Hejun Wong] 15:56:54
+Okay, so whenever we perform a search. A text search using error search what you will do is actually perform like tokenization normalization and stemming. So tokenization means that in a sentence, it was speed up the centers into different words so here we have two tokens
+
+[Hejun Wong] 15:57:17
+Raising and Arizona. Then it will apply normalization. So it will make all the text into lowercase Okay, so you will change it to raising Arizona but r will become small r a will become small A.
+
+[Hejun Wong] 15:57:34
+And finally, it will do like stemming. So stemming means that it will change words like raising to race.
+
+[Hejun Wong] 15:57:45
+Like those works with plural like s it will change it to us do a singular token So past tense to present tense. So these are some basic mechanism that we use when we use standing okay so the whole idea is to
+
+[Hejun Wong] 15:58:09
+Change the work into a common form So when we store this information in the database When the query comes in, we will also perform tokenization.
+
+[Hejun Wong] 15:58:21
+Normalization and stemming. Then we'll compare the data between what is stored in the database as well as the query.
+
+[Hejun Wong] 15:58:29
+So we have that we are open to some variations of raising SELS Arizona. So that's how we handle like different spelling typos.
+
+[Hejun Wong] 15:58:41
+And even different meanings like synonyms Okay, so these are all possible with Advoc.
+
+[Hejun Wong] 15:58:49
+Okay, next thing is when we use adverse search our results are sorted not by a specific value in the data like a normal database sort But we are sorting the results based on what we feel matches our query the best.
+
+[Hejun Wong] 15:59:05
+And to do this, each result is actually assigned a score.
+
+[Hejun Wong] 15:59:10
+So how exactly that score is assigned is something that we have a lot of control over in error search.
+
+[Hejun Wong] 15:59:15
+And we'll look at this score in greater detail later. But the score is to denote the relevant score to the results. So by sorting and getting the highest score first, we are actually getting the most relevant result for our users.
+
+[Hejun Wong] 15:59:30
+So here we are searching javascript book And the results that are written to us JavaScript, the definitive guide.
+
+[Hejun Wong] 15:59:40
+Javascript.books beginner guide to node.js So even this title which has this title no direct link to JavaScript or a book is still able to they return to us it knows that this is actually a book so it knows like some context to it
+
+[Hejun Wong] 15:59:59
+So there's some relevancy to it. It seemed for endure for dummies.
+
+[Hejun Wong] 16:00:04
+You don't see the word JavaScript or book within it, but it is still able to return the result for us.
+
+[Hejun Wong] 16:00:14
+So how do we assess and research? Okay so here we can connect to our free tier and a small number of Okay, so let's go to our instruct environment
+
+[Hejun Wong] 16:00:35
+Connect to our database.
+
+[Hejun Wong] 16:00:43
+And we can copy the codes on line 284 within the text editor.
+
+[Hejun Wong] 16:00:50
+Okay, so copy from 284 to 291.
+
+[Hejun Wong] 16:01:19
+So once you have inserted the documents is you'll show up in your database it's also here within Compass IC.
+
+[Hejun Wong] 16:01:31
+That within the example collection, I have three documents inserted.
+
+[Hejun Wong] 16:01:41
+Okay, so everybody as you reach this point. So let's take a look at these three documents So basically we have three different object ids And key things are in the text view.
+
+[Hejun Wong] 16:01:56
+So in this text view, this is a sentence but the key thing about this sentence is that there is a typo.
+
+[Hejun Wong] 16:02:03
+So instead of E, they store it as a Okay, so later this is something that we'll take note.
+
+[Hejun Wong] 16:02:11
+So whether is it one word or two words could make a difference to the difference results.
+
+[Hejun Wong] 16:02:20
+So these are the three examples that we have inserted.
+
+[Hejun Wong] 16:02:29
+Okay, so on campus you will be able to see the data Okay, next, let's go ahead and create a default search index.
+
+[Hejun Wong] 16:02:40
+Okay, so let me run you through this. So go to your address console
+
+[Hejun Wong] 16:02:53
+One cell insight. Click on browse corrections
+
+[Hejun Wong] 16:03:06
+Navigate to Avera Search. 10.
+
+[Hejun Wong] 16:03:20
+And create a such index.
+
+[Hejun Wong] 16:03:33
+Yeah, I'll pause here to wait for everybody to reach this stage.
+
+[Hejun Wong] 16:03:36
+Let me know if you have any issues.
+
+[Hejun Wong] 16:03:51
+Okay, I see a good from tony
+
+[Hejun Wong] 16:04:00
+Thank you, SLGSR, thank you.
+
+[Hejun Wong] 16:04:05
+It's a thing as well. Thank you.
+
+[Hejun Wong] 16:04:12
+Oh sorry am i getting your name correct? How do I pronounce her name again sorry Okay, thank you.
+
+[Jrting Shiau] 16:04:18
+Yes, yes, correct.
+
+[Hejun Wong] 16:04:24
+Okay, yogi, all right?
+
+[Prayogi Tio] 16:04:28
+Yeah, but this play is not exactly the same as yours.
+
+[Hejun Wong] 16:04:34
+Oh.
+
+[Hejun Wong] 16:04:38
+Okay. Do you have a button to say create the search index, do you see this interface?
+
+[Prayogi Tio] 16:04:48
+I clicked the button already Maybe I can.
+
+[Prayogi Tio] 16:04:56
+Been shared.
+
+[Hejun Wong] 16:04:57
+Okay, share your screen first. I'll stop sharing.
+
+[Hejun Wong] 16:05:11
+Yeah, okay. Yes. Pretty similar so no issues with that.
+
+[Prayogi Tio] 16:05:11
+Yeah.
+
+[Hejun Wong] 16:05:19
+Okay, now I'll reshare my screen.
+
+[Hejun Wong] 16:05:25
+Okay, so the first step we are going to do is create a default index so first select the error search.
+
+[Hejun Wong] 16:05:33
+Such type. Okay, next, you can give it an index name. So you'll just give it as default After that, select search training database example collection.
+
+[Hejun Wong] 16:05:47
+So check. The example collection.
+
+[Hejun Wong] 16:05:52
+Then we can use the visual editor for our start. Click on next.
+
+[Hejun Wong] 16:06:04
+Okay so next we are getting to this page where it's like a review page So within the review page you can see that now we are going to index our data using luxin.standard analyzer.
+
+[Hejun Wong] 16:06:21
+So there are a few analyzers that we can use. Most of the time we can use routine standard it supports like English, Chinese characters Yeah, so it's quite common if you have like a japanese korean data in your database then you can
+
+[Hejun Wong] 16:06:42
+Language specific. We've seen an analyzer.
+
+[Hejun Wong] 16:06:45
+Okay, so it is possible for you to change the analyzer So when you use machine standard to use standard build your search index you should use the same analyzer.
+
+[Hejun Wong] 16:06:59
+To query you know, a search index.
+
+[Hejun Wong] 16:07:04
+Okay, so these two should always be the same. So if you use like a language specific analyzer then you should ensure that these two are the same.
+
+[Hejun Wong] 16:07:12
+Okay, next is dynamic mapping. Dynamic mapping means that if it is on, it means that now I'm going to index all the fields within my collection and technically i only have two fields here underscore ID field as well as your
+
+[Hejun Wong] 16:07:29
+Types view so it's not a lot so it's okay But in a normal document where you are only if you have a person or player document and you have many, many fields inside you need to decide which are the fields that I will potentially search
+
+[Hejun Wong] 16:07:45
+So I can refine the search index to only include those fields that I'm going to search against.
+
+[Hejun Wong] 16:07:52
+And that will help to reduce my search index size Okay, so to refine your index you click on the refine your index button can scroll down here we did a few mappings you can add field mapping.
+
+[Hejun Wong] 16:08:07
+Okay so here you can go to customize configuration And you can select what are the fields that you want to index.
+
+[Hejun Wong] 16:08:16
+So when you select the field that you want to index you need to provide the corresponding data type.
+
+[Hejun Wong] 16:08:22
+For that view. So it can be a streaming, it can be a date It can be a number, so and so forth.
+
+[Hejun Wong] 16:08:31
+Okay, so for now let's cancel it we are used the default dynamic mapping.
+
+[Hejun Wong] 16:08:39
+So we'll turn it on. Okay, so same as few mappings.
+
+[Hejun Wong] 16:08:45
+Okay so stock sauce fields just means that your fields within your collection are also stored in the index so that it helps in your session retrieval.
+
+[Hejun Wong] 16:08:57
+But there are some performance consideration for this. So usually we don't enable stored source views.
+
+[Hejun Wong] 16:09:05
+Cadence synonyms mapping is to win.
+
+[Hejun Wong] 16:09:09
+Now I can define the list of synonyms. So for example, if I were to search for bicycle I was search for a giant So giant is a bottle.
+
+[Hejun Wong] 16:09:23
+Bicycle brand from Taiwan. Search for giant, it will still return me with results that contains bicycles.
+
+[Hejun Wong] 16:09:33
+Yeah, so synonyms are terms that actually have the same meaning.
+
+[Hejun Wong] 16:09:40
+Okay, so we can define synonym mapping as well. So it is let's go ahead and create our search events
+
+[Hejun Wong] 16:09:51
+Then the status will be pending. And you'll see that On the right hand side number of documents index is now zero but later it will increase to one R3 and QL3.
+
+[Hejun Wong] 16:10:14
+Okay, so while waiting let me see. Let's go back to the slides.
+
+[Hejun Wong] 16:10:20
+So we did this we created a default search index where the index and search analyzers are using lucine.standard.
+
+[Hejun Wong] 16:10:30
+And we have turned on dynamic mapping Which means that we are going to index all the fields within the document.
+
+[Hejun Wong] 16:10:40
+So that's wait for the… such index to review, then we will perform a simple text search
+
+[Hejun Wong] 16:10:53
+Okay, so on my end my search index has reached a status of ready.
+
+[Hejun Wong] 16:11:01
+Is it the same for all of you? Okay.
+
+[Hejun Wong] 16:11:06
+Okay, so when it's ready, you can click on the query button on the right hand side.
+
+[Hejun Wong] 16:11:23
+Okay, then let's try typing the word sentence.
+
+[Hejun Wong] 16:11:28
+And click on search.
+
+[Hejun Wong] 16:11:42
+Okay, so when? You are done, you should get back one document So you might ask how come The other sentence with the typo did not appear.
+
+[Hejun Wong] 16:11:54
+So to make sure that it appears we can actually set up change our query to make it such that it's a fuzzy text search.
+
+[Hejun Wong] 16:12:02
+But for now, let's go back to the deck and see what can research
+
+[Hejun Wong] 16:12:17
+So let me copy this.
+
+[Hejun Wong] 16:12:24
+Piece of code and send it to your
+
+[Hejun Wong] 16:12:44
+So how to enter the query mode is to click on the edit query button then replace the search closely with the land there, just paste it.
+
+[Hejun Wong] 16:12:55
+And click on search.
+
+[Hejun Wong] 16:13:04
+Okay, so let's look at this piece of code in greater detail.
+
+[Hejun Wong] 16:13:10
+So what it's doing here it's doing First, you need to run the aggregation pipeline with the dollar search stage So we are using a dollar search stage, MongoDB will know that you are performing an adverse search.
+
+[Hejun Wong] 16:13:26
+Okay, so for error search, you'll first need to define what is the index that you're going to search against.
+
+[Hejun Wong] 16:13:31
+So just now we created a default index So we let MongoDB know that, okay, we want to search against the default index And we are going to perform a text search So the query value that we want to query against is sentence
+
+[Hejun Wong] 16:13:49
+With the E spelling as A. And a path would just mean that we want to query against the database view.
+
+[Hejun Wong] 16:13:59
+Okay, so if you know the database field and you want to query against you can put in the database field name here if you do not know that you can use wildcard equals to star So when WalkA equals to start just means that it will search sentence across all the fields that have been indexed.
+
+[Hejun Wong] 16:14:20
+Okay. And for now we only have one two such fields are your underscore ID as well as the text field so searching again centers against all the fields just returns our sleeve.
+
+[Hejun Wong] 16:14:34
+This single document And next.
+
+[Hejun Wong] 16:14:40
+We can also view the score of our results, the relevant score by including these set operator.
+
+[Hejun Wong] 16:14:51
+And the set operator, we need to include an additional output field that is the meta stage.
+
+[Hejun Wong] 16:15:00
+The team can go ahead and ask any questions if you have.
+
+[Hejun Wong] 16:15:08
+Okay, now continue. Okay, so with this set Yeah, creating a new field called score.
+
+[Jrting Shiau] 16:15:09
+No.
+
+[Hejun Wong] 16:15:19
+And you're assigning the search call to this field.
+
+[Hejun Wong] 16:15:24
+Okay, so that's… Run this.
+
+[Hejun Wong] 16:15:56
+Looks like there's some hyperlink in the code so when you paste it, you must ensure that you don't paste the hyperlink or so on.
+
+[Hejun Wong] 16:17:05
+Now let me compare the quotes.
+
+[Hejun Wong] 16:18:06
+How is this? Let me go to my collections and use the aggregation pipeline.
+
+[Hejun Wong] 16:18:21
+So navigate to the example collection then click on Education.
+
+[Hejun Wong] 16:18:42
+So again, I've pasted the codes into our zoom chat
+
+[Hejun Wong] 16:18:52
+So essentially there are two stages that is performing now The first stage is a dollar search Then the second stage is a set Stitch.
+
+[Hejun Wong] 16:19:03
+Okay, so with this, it outputs the score into the results.
+
+[Hejun Wong] 16:19:09
+Sort of scores 0.4622.
+
+[Hejun Wong] 16:19:17
+Okay, are you able to reach this step?
+
+[Hejun Wong] 16:19:36
+Either carry on.
+
+[Hejun Wong] 16:19:48
+So the next exercise is you search for the word sentence and output it with the score try to search for one and then one two and output those two We're just going to show.
+
+[Hejun Wong] 16:20:01
+So you can either use adverse irrigation pipeline or you can use the codes for your Mongo shell then you need to define the variable let query goes to your array.
+
+[Hejun Wong] 16:20:14
+Then db.example. Aggregate then run that pipeline this query pipeline So either way.
+
+[Hejun Wong] 16:20:44
+Here I've modified the pipeline codes to query for one So when I query for one, there are three results that were written And by default, you'll see that the results with the higher score is at the top.
+
+[Hejun Wong] 16:21:01
+K 0.0629 Followed by 0.01.
+
+[Hejun Wong] 16:21:05
+612 followed by 0.0581. So the results.
+
+[Hejun Wong] 16:21:11
+The highest score will be automatically ranked on top.
+
+[Hejun Wong] 16:21:18
+Okay, then the next term that we should search for is one two
+
+[Hejun Wong] 16:21:24
+So we place the query value with one two then you'll notice that now another document has a higher School.
+
+[Hejun Wong] 16:21:36
+So the document with the document with the term one as well as two appears right at the top.
+
+[Hejun Wong] 16:21:43
+As compared to the other two documents which has the term one or two at the back And this one we've just one appearing once.
+
+[Hejun Wong] 16:22:03
+Okay.
+
+[Hejun Wong] 16:22:08
+Okay, so now If you want to search for sentence but you will need to be able to detect the typo I have prepared.
+
+[Hejun Wong] 16:22:23
+This set of quotes.
+
+[Hejun Wong] 16:22:28
+Okay so here if you look at my piece of code Same thing. I'm telling dollar search to search against the default index and i'm performing text query
+
+[Hejun Wong] 16:22:46
+But this time, apart from providing the query and the path I'm also telling the text query to say, hey, I want to perform a fuzzy text query so i can tell them The maximum number of character changes should be only two
+
+[Hejun Wong] 16:23:06
+So here's so here If there's a typo to just a typo it should return me.
+
+[Hejun Wong] 16:23:13
+The result with E as well. So there's only one change.
+
+[Hejun Wong] 16:23:17
+So maximum it can maximum it can afford to go to two
+
+[Hejun Wong] 16:23:26
+Okay, so even with two changes I was still able to retrieve the search typo.
+
+[Hejun Wong] 16:23:44
+Okay, so I have pasted the codes to handle fuzzy text search within our Zoom chat.
+
+[Hejun Wong] 16:23:53
+So you can try it. So the prefix length just means that sometimes you get a lot of noise when you have like max editor So if you want The… if you say, okay, the prefix as the front part of the word has to be the same
+
+[Hejun Wong] 16:24:12
+For the first two characters. To reduce the number of noise then you can do you can set a prefix going to two all one okay so this ensures that the first character is the same so you reduce the number of noise
+
+[Hejun Wong] 16:24:29
+Okay, so this is the purpose of the prefix right
+
+[Hejun Wong] 16:24:34
+Yeah, so I saw Yogi's message to everyone Oh, such testimonial supports single search.
+
+[Hejun Wong] 16:24:41
+Yeah, so we need to use aggregation pipeline for multiple stages yeah thank you And the other thing about the toggle search stage is that it has to be the very first stage in your pipeline.
+
+[Hejun Wong] 16:24:54
+Okay, so it has to be the very first stage. You cannot do a match stage first.
+
+[Hejun Wong] 16:25:00
+Followed by a dollar s you have to do a dollar stitch first.
+
+[Hejun Wong] 16:25:04
+Okay, so if it detects that you are using a dollar search stage.
+
+[Hejun Wong] 16:25:10
+As your first stage in your pipeline what it does is actually it will send the query to your MongoDB cluster your customer will detect that, oh, it's a error search query then you will redirect the query to your such notes.
+
+[Hejun Wong] 16:25:27
+So your search nodes is where you will store your search indexes.
+
+[Hejun Wong] 16:25:32
+So your index will not be stopped on your MongoDB cluster so it read It can help you save space in both your disk and RAM.
+
+[Hejun Wong] 16:25:40
+So your search index will be stopped on your dedicated search nodes.
+
+[Hejun Wong] 16:25:44
+So that you get better query performance and your search queries will not impact.
+
+[Hejun Wong] 16:25:52
+Your main MongoDB cluster. So this is if you have the dedicated search nodes
+
+[Hejun Wong] 16:26:01
+Okay, so let's move on so those that's like the basic intro to EverSearch.
+
+[Hejun Wong] 16:26:10
+So far, any questions before I share one popular use case of Angular Search?
+
+[Hejun Wong] 16:26:20
+Okay, so let me share. Tony, go ahead.
+
+[Tony Lin Yi-Siang] 16:26:23
+Question. If I want to maintain a search node.
+
+[Tony Lin Yi-Siang] 16:26:29
+To ready to study to 2. Oh, okay.
+
+[Hejun Wong] 16:26:31
+Yes, minimum two.
+
+[Hejun Wong] 16:26:36
+You cannot choose one. The minimum is two.
+
+[Tony Lin Yi-Siang] 16:26:39
+Oh, I see.
+
+[Hejun Wong] 16:26:44
+So for the search queries is fire to the search node it is fired in the wrong lobby manner.
+
+[Hejun Wong] 16:26:53
+So… If your search node is undergoing maintenance, one of it is undergoing maintenance, it will just fire the query to the next search node.
+
+[Hejun Wong] 16:27:03
+Yeah, and if two is available or more than two is available you will just prior to the first one, then second one, third one fourth one and so on and so forth.
+
+[Hejun Wong] 16:27:14
+Okay, so that is ever search but before we move on to vector search, I wanted to share a common scenario that many of our customers face So if you have an application that allows you to dynamically so like the fields you want to query
+
+[Hejun Wong] 16:27:37
+That means like uh
+
+[Hejun Wong] 16:27:43
+I have another customer image, but I don't think it's suitable to share. Let me find if Google has an image
+
+[Hejun Wong] 16:28:10
+Okay, so for example we have this.
+
+[Hejun Wong] 16:28:27
+I'll use this as a quick example. Here in this application I am able to select the field that we want to query okay so sometimes you can choose like application provider you can choose like date created you can choose an applicant name
+
+[Hejun Wong] 16:28:49
+Okay, so this is an example where your application allows users to dynamically query the fields that you have within your database But this morning we'll be going about compound indexes we learned that the order of the query views should match.
+
+[Hejun Wong] 16:29:10
+The order of your index fields. Correct. So it should match and when you create an index, it should follow the ESR guideline So the bomb comes when… if you have an application that allows users to dynamically select the fields to query
+
+[Hejun Wong] 16:29:28
+No matter how many compound indexes you create you might not be able to find a suitable index to suit this query.
+
+[Hejun Wong] 16:29:37
+Because now the first few can be any field.
+
+[Hejun Wong] 16:29:43
+Okay, so far you'll understand. That this is an issue with the MongoDB database index that because the order of the fields matter so much in the compound index we might not be able to find a suitable index to suit this application.
+
+[Hejun Wong] 16:30:00
+And if you cannot find a suitable index for this application when they fire a query that's not supported by index it will become very soon. It will become a collection scan So what we can do is actually use Angular Search.
+
+[Hejun Wong] 16:30:16
+So with Angular Search. We can actually
+
+[Hejun Wong] 16:30:24
+Create a search index that comprises of all the fields that you want to query
+
+[Hejun Wong] 16:30:36
+Okay so for example let me show you the other database
+
+[Hejun Wong] 16:30:47
+There are many indexers. Okay, and now I have this index.
+
+[Hejun Wong] 16:30:58
+With a lot of fields that I want to query against and i need to specify like the different data types Okay, so because my customer had.
+
+[Hejun Wong] 16:31:12
+They didn't know about ever search previously they had to create many compound indexes. They had like 40 plus indexes in their collection.
+
+[Hejun Wong] 16:31:19
+And we know that once you're index hit like 20 to 30 indexes in your collection your correction will start to receive will start to have free and right performance issues. So what we did is use error search. With Azure Search, you can create one single index
+
+[Hejun Wong] 16:31:39
+Okay so we have one single index. And for the developers to change there are codes to use dollar search code And once they change our codes to use I go search we can rely on this single index to perform queries.
+
+[Hejun Wong] 16:31:59
+Okay, so we have dedicated search node. Their queries were a lot faster as well so because they have like one begin documents within a collection when you try to query one full day's worth of data that query will time out.
+
+[Hejun Wong] 16:32:13
+But with Azure Search, we were able to retrieve that one days of data within four seconds, we could even query for one week of data, one month of data.
+
+[Hejun Wong] 16:32:24
+Because now the processing power has been shifted to a dedicated search node.
+
+[Hejun Wong] 16:32:28
+And we are not relying on compound indexes. We are relying on this single I go search index. So this is a common use case a common solution that we are adopting right now for such applications with like the ability to dynamically select the fields you want to query.
+
+[Hejun Wong] 16:32:50
+Okay, so apart from having like a full text search, the ability to handle typo highlighting autocompete now we have this new uk use case for agricultural app if you have a dynamic application where users can select diffuse dynamically that you can use as a search as well.
+
+[Hejun Wong] 16:33:12
+Yeah, so that's on LSI. Okay, any questions for me?
+
+[Tao Song] 16:33:18
+It's the same eye. Create another cluster.
+
+[Tao Song] 16:33:24
+That's full search.
+
+[Hejun Wong] 16:33:26
+It is still the same cluster. So actually
+
+[Tao Song] 16:33:31
+No, I mean, if I don't use alert search in on-premise, can I have another replicate replica cluster just set up for our research use, right?
+
+[Hejun Wong] 16:33:35
+Mm-hmm.
+
+[Tao Song] 16:33:44
+It's the same idea about it. The search node.
+
+[Hejun Wong] 16:33:47
+Um… The index of a of Apache loosing is very different from the MongoDB database index.
+
+[Hejun Wong] 16:33:57
+So even if you set up a separate cluster you will not be able to achieve that same capability.
+
+[Tao Song] 16:34:04
+Okay, because currently how we… implement the search feature easily kind of replicate the data to, for example, personally, we use Azure search.
+
+[Hejun Wong] 16:34:05
+Yeah, and…
+
+[Tao Song] 16:34:16
+So we publish the data to the authority and use the same as I'll say such yeah
+
+[Hejun Wong] 16:34:25
+Okay yeah so that's one way Actually, for MongoDB, we haven't They have announced that search will be made available from our self-managed clusters, but currently it's only available on atlas So the beauty of having it on Paragus is that
+
+[Hejun Wong] 16:34:43
+You don't need to shift your data to like a separate open search or or Azure search platform, your data still remains within MongoDB.
+
+[Hejun Wong] 16:34:55
+And whenever there is a change to your change data set your search nodes data will automatically be updated Because every search node is actually listening to like a primary or secondary note as listening for changes made to the data
+
+[Hejun Wong] 16:35:13
+So whenever there's data change, it will update the search index as well So you don't need to like ETL your data over to another separate platform.
+
+[Hejun Wong] 16:35:23
+So that's the beauty of Edward Search as well. So that's one.
+
+[Hejun Wong] 16:35:32
+Are there any other things? So far, that's what I can think of.
+
+[Hejun Wong] 16:35:40
+Oh, the other thing is… When you perform a dog search.
+
+[Tao Song] 16:35:40
+Thank you.
+
+[Hejun Wong] 16:35:46
+Query using your query using your aggregation pipeline. You can also add subsequent stages they go to get data from your main database cluster as well.
+
+[Hejun Wong] 16:35:58
+Yeah, so because it's within the same cluster, you can query data so you can add more value add more value to your results.
+
+[Hejun Wong] 16:36:10
+Not just those that reside in your search index.
+
+[Hejun Wong] 16:36:18
+Tony, go ahead.
+
+[Tony Lin Yi-Siang] 16:36:20
+Okay. Enable atlas Search without create a search node
+
+[Hejun Wong] 16:36:28
+Yes. Okay. But it will keep eating into your Costas.
+
+[Hejun Wong] 16:36:36
+Resources. So actually…
+
+[Tony Lin Yi-Siang] 16:36:39
+Even… Even the application run a rate from the secondary
+
+[Hejun Wong] 16:36:47
+Yeah, you will still incur because it's actually running a different process So our normal mongol DB cluster is actually running a MongoD process.
+
+[Hejun Wong] 16:37:00
+For search is running on mongoT. Yeah, so it's a different process. That's why it will take up resources in your main cluster as well.
+
+[Tony Lin Yi-Siang] 16:37:04
+Oh.
+
+[Hejun Wong] 16:37:11
+The site, the recommendation is to set up a separate dedicated search node so that your mongot As long as your search index recite on the dedicated session.
+
+[Hejun Wong] 16:37:22
+And it won't impact the performance of your main cluster.
+
+[Hejun Wong] 16:37:31
+Okay, any other questions?
+
+[Tony Lin Yi-Siang] 16:37:35
+Can I add the other index on the collection with the atlas Search Index.
+
+[Hejun Wong] 16:37:45
+Okay, let me show you an example. So here I have my dedicated search node And…
+
+[Hejun Wong] 16:38:01
+For this test database proposal collection under indexes, I have two tabs.
+
+[Hejun Wong] 16:38:10
+So i have the normal database indexes as well as my search indexes Yeah, so you can have both.
+
+[Hejun Wong] 16:38:20
+Types of indexes for the same collection.
+
+[Tao Song] 16:38:25
+So for the search indexes, we also follow the best practice At most full, is it?
+
+[Hejun Wong] 16:38:32
+Oh, no need, no need. Uh… Okay, so when you are
+
+[Tao Song] 16:38:33
+So, okay. So this one kind of have multiple.
+
+[Hejun Wong] 16:38:43
+When you're creating your search application you should actually work with like solution architect from MongoDB.
+
+[Hejun Wong] 16:38:53
+And it will help you to size your dedicated search node properly and the sizing of a dedicated search node is heavily dependent on what are the fields you are going to index?
+
+[Hejun Wong] 16:39:07
+Let me show you a example.
+
+[Hejun Wong] 16:39:17
+Okay, I'll see my spreadsheet. Okay okay so The… solution architect or the consulting engineer will first ask you, okay, how many search fields you want to index?
+
+[Hejun Wong] 16:39:33
+How many text fields you want to index. What is the average size of each text field?
+
+[Hejun Wong] 16:39:38
+Design is by default 3.33 Do you want to enable the autocomplete feature?
+
+[Hejun Wong] 16:39:44
+Which fields you want to use autocomplete on. How many date fields, how many numeric fields, so on and so forth.
+
+[Hejun Wong] 16:39:51
+So we have all this information as well as the number of documents in your collection, Beagle will recommend you like the search node to spin up.
+
+[Hejun Wong] 16:40:02
+Yeah, so you cannot keep creating such indexes Plus, by creating such index.
+
+[Hejun Wong] 16:40:10
+You will require more RAM. More resources on your search node so Whenever you create index, you should actually check with the solution architect as to what is the best I should spin up now to cater to my use case.
+
+[Hejun Wong] 16:40:29
+Yeah.
+
+[Tao Song] 16:40:29
+So this one you only suggest for text search, is there
+
+[Hejun Wong] 16:40:35
+There's numeric search as well Yeah, but this covers both a search as well as vector search.
+
+[Tao Song] 16:40:40
+Okay.
+
+[Tao Song] 16:40:45
+Okay.
+
+[Hejun Wong] 16:40:46
+And all these are all the dedicated session.
+
+[Hejun Wong] 16:40:54
+So there's also like if you are you need to sort so and so forth So usually when they do sizing, they will ask you a few questions you know if you want to be stable then you will get the answer as to what search node to spin up.
+
+[Hejun Wong] 16:41:14
+So this is the search notes. Any other questions?
+
+[Prayogi Tio] 16:41:23
+I'm wondering why why in the search node, we maintain both type of indexes, one for a search index Another one is the MongoDB index.
+
+[Hejun Wong] 16:41:31
+Oh. Okay, so your search index will recite in your search node but your normal MongoDB indexes will recite on your primary or secondary note.
+
+[Hejun Wong] 16:41:44
+It would only recite on the search notes.
+
+[Prayogi Tio] 16:41:48
+It's just hit link somehow in here.
+
+[Hejun Wong] 16:41:52
+This is just like convenience. Based on the UI. Yeah, but actually if you have dedicated search notes These search indexes are stored.
+
+[Hejun Wong] 16:42:02
+In your dedicated search nodes. Yeah.
+
+[Prayogi Tio] 16:42:02
+So…
+
+[Hejun Wong] 16:42:12
+All good?
+
+[Hejun Wong] 16:42:17
+Then let's move on to vector search. Kso vector search.
+
+[Hejun Wong] 16:42:23
+So what is vector search? So in Average, you can create and store vector embeddings with machine learning models like open ai for retrieval augmented generation rank applications uh semantic search, recommendation engines all that dynamic personalization or other use cases.
+
+[Hejun Wong] 16:42:44
+So this new functionality allows you to build semantic search an AI pilot application So semantic search.
+
+[Hejun Wong] 16:42:54
+Users context cues to determine the meaning of a word across a data set of millions of examples so for example now I'm finding a sweater My query is a sweater.
+
+[Hejun Wong] 16:43:13
+And even if I search for one coding, it will still return me sweaters.
+
+[Hejun Wong] 16:43:18
+Because it knows the context. Of my research.
+
+[Hejun Wong] 16:43:23
+Or another query I can ask is. How can I keep my body warm?
+
+[Hejun Wong] 16:43:28
+In the winter. So he's able to understand your disc query and get the context of it and try to get the relevant results from your query.
+
+[Hejun Wong] 16:43:41
+Okay, so how do we do it? We can use it through vector search.
+
+[Hejun Wong] 16:43:45
+So with vector search because we now have greater context in your query, we can enhance your Q&A systems, we can generate Well, actually a great model memory And we can supply your LLM with this relevant documents that are written from your vector search.
+
+[Hejun Wong] 16:44:07
+Okay, so in AI, we always talk about hallucination where AI hallucination is when your model was trained previously based on historical data but the data like relevancy to your company or it is based on old data which might be inaccurate at this point in time
+
+[Hejun Wong] 16:44:30
+So to avoid hallucination. Where a vector search can come in is that you can search across your company's data and feed your large language model with newer and more relevant documents So that the results that it turns out is more relevant for your use case.
+
+[Hejun Wong] 16:44:48
+Okay, so… Vector search is used for searching queries with their unique context too.
+
+[Hejun Wong] 16:44:59
+Whereas for agro search, it is searching for keyword based kind of search.
+
+[Hejun Wong] 16:45:08
+Okay, so… What is the vector search by?
+
+[Hejun Wong] 16:45:14
+By itself so by itself what it does is actually searching unstructured data based on semantic meaning captured within vectors.
+
+[Hejun Wong] 16:45:25
+So here, vectors are just an array of like floating numbers.
+
+[Hejun Wong] 16:45:32
+And this array of floating numbers capture the context of the data.
+
+[Hejun Wong] 16:45:41
+Okay, so… At the top, how it works is
+
+[Hejun Wong] 16:45:49
+Let me see if I have an example.
+
+[Hejun Wong] 16:46:11
+Okay, so… This is the general flow for vector search in MongoDB.
+
+[Hejun Wong] 16:46:24
+When you have a new database document that is inserted into your database.
+
+[Hejun Wong] 16:46:29
+We can actually create a database trigger And this trigger will fire
+
+[Hejun Wong] 16:46:38
+Requests to a third party AI model to generate the embeddings.
+
+[Hejun Wong] 16:46:45
+Okay, so when this Embeddings are generated. So for example, here the database I have a new document and i want to store like the document is on movies.
+
+[Hejun Wong] 16:46:59
+And within the document, it has a description of the movie so that I can search across this description of the movie and i want to search across it i will index it So when the new movie document comes in
+
+[Hejun Wong] 16:47:13
+My database trigger will fire. And I will generate an embedding on this movie description field.
+
+[Hejun Wong] 16:47:21
+Okay, so I'll generate embeddings here And I will store the embeddings into the same movie documents.
+
+[Hejun Wong] 16:47:29
+So by storing the embeddings into the same movie document When I query the movie document, I can query not just that embedding I can query the other fields as well.
+
+[Hejun Wong] 16:47:40
+Okay, so this is the first price point of using MongoDB ILS Vector Search.
+
+[Hejun Wong] 16:47:47
+You can query not just your vector embedding script. A lot of people store their vectors embedding on AWS S3.
+
+[Hejun Wong] 16:47:54
+You can actually store your embeddings in the sink document.
+
+[Hejun Wong] 16:48:00
+So that you can query both your embedding as well as your other information stored in the document Okay, so this is the first part. You can use MongoDB as a vector storage.
+
+[Hejun Wong] 16:48:12
+So you store your embeddings into MongoDB. So you might notice that you might notice that But this one is a third party it's not it's not MongoDB, that means If there's an api key which is very limited i might need to pay extra money
+
+[Hejun Wong] 16:48:28
+To this third-party surveys like open ai to generate the AI models and buildings.
+
+[Hejun Wong] 16:48:35
+So recently, I think about a month MongoDB actually acquired this company called voyage AI.
+
+[Hejun Wong] 16:48:45
+So we acquired Voyage AI. And what Vonage AI do, right?
+
+[Hejun Wong] 16:48:51
+Is actually it provides embedding and re-ranking models So in future you don't need to go to a third party to generate your embeddings you can do it natively This can be done within MongoDB itself.
+
+[Hejun Wong] 16:49:06
+And that is done through Voyage AI. But that's in the near future.
+
+[Hejun Wong] 16:49:09
+But for now, you still need to call a third party AI. So we support a lot of different kinds of ambiguity models So that's up to you. So you can use MongoDP as a vector storage.
+
+[Hejun Wong] 16:49:21
+So how to query So this is the second part.
+
+[Hejun Wong] 16:49:28
+Coding embeddings we can use vector search. So the vector search pipeline stage is different from the EverSearch pipeline stage.
+
+[Hejun Wong] 16:49:37
+So just as our search was dollar search. Vectors that use dollar vector search Okay, so how we query is that now we have a new query or question that comes in Then we will have to first fire the db trigger to generate the embeddings for this query.
+
+[Hejun Wong] 16:49:57
+Because now… here my data that i want to indexes in the array of floating numbers, I need to convert it to the same array of floating numbers for me to do a comparison and a search.
+
+[Hejun Wong] 16:50:13
+Okay, so I will need to create embeddings for my query And once I have the embeddings for my query I get the query vector here Okay, so I've converted the query into the embeddings then now i need to search against my
+
+[Hejun Wong] 16:50:32
+Editing field which is put underscore embedding So here, I started embeddings in plot underscore embedding field our career against this part underscore embedding field.
+
+[Hejun Wong] 16:50:42
+Okay, so it's important to take note that which model you use to generate the embeddings for this embedding and which model used to generate the embedding for this query has to be the same model.
+
+[Hejun Wong] 16:50:54
+You're not in our niche okay so once you have both the embeddings, you will be able to perform a vector search And with the vector search, it will return you with all the relevant documents that fit your query.
+
+[Hejun Wong] 16:51:10
+Okay, so this is vector search. But maybe to complete the whole picture for our deck would be Now with the relevant documents You can also supply the query together with the relevant documents to your large language model.
+
+[Hejun Wong] 16:51:27
+And your large language model will now be able to give you a response that is more applicable to your company's data.
+
+[Hejun Wong] 16:51:36
+Okay, so this is the direct retrieval oriented generated use case Okay, so this is red and we actually have chat bot.
+
+[Hejun Wong] 16:51:53
+That was built on this a chatbot framework that was built on this RAC framework so let me share with you the
+
+[Hejun Wong] 16:52:19
+Okay, so this is a GitHub page. So MongoDB chatbot framework So this chatbot framework is actually LS factor search.
+
+[Hejun Wong] 16:52:28
+And after that you feed it together with a lm to achieve right so if you're interested you can take a look at this GitHub page, I'll paste that into our chat.
+
+[Hejun Wong] 16:52:45
+Okay, so that's vector search in nutshell.
+
+[Hejun Wong] 16:52:54
+Okay, so returning back to our slide. So vectors are a numeric representation of our data And yeah, stop within the same document And to search it we can just search tell them, okay, the path is our database view name that is put underscore embedding
+
+[Hejun Wong] 16:53:13
+So we need to convert the query into an embedding as well. And after that, we'll be able to retrieve all the relevant documents back.
+
+[Hejun Wong] 16:53:24
+Okay so this is how we can create a vector search I'll just simply run through first.
+
+[Hejun Wong] 16:53:31
+So you will need MongoDB version 6.0.11 and above. To use vector search on Aegis.
+
+[Hejun Wong] 16:53:44
+Okay, so here we are creating the index we are creating a vectors type of index on a starter index into this path called plot also create an index on this embedding.
+
+[Hejun Wong] 16:54:02
+Feel pillar underscore bidding. Okay, so the number of dimensions we have to take.
+
+[Hejun Wong] 16:54:11
+It has to be the same as the embedding model that we use to create the embeddings.
+
+[Hejun Wong] 16:54:16
+Cadence similarity is Euclidian cosine of the dot product.
+
+[Hejun Wong] 16:54:21
+Basically tool to help measure the the distance and the differences between Each.
+
+[Hejun Wong] 16:54:31
+Vector. Okay, so this is using the similarity there are three main Similarity.
+
+[Hejun Wong] 16:54:40
+Model so euclidean. Or say, oh, dot, dot.
+
+[Hejun Wong] 16:54:46
+Okay, so with vector search we can run an aggregate pipeline So I run this vector search stage you will return me all the relevant results and i'll use the projection to only project the fields that I'm interested in.
+
+[Hejun Wong] 16:55:05
+As long as the vector search flow. Okay, so by default, all the scores in the highest all of you on top.
+
+[Hejun Wong] 16:55:17
+So it's pretty similar to Angular Search in this sense.
+
+[Hejun Wong] 16:55:29
+Okay, so… Here's a quick exercise, maybe not so quick but Let me see our database.
+
+[Hejun Wong] 16:55:41
+So far in Titan itself they have a use case for a vector search.
+
+[Tao Song] 16:55:51
+Not really. It's just not really own each department may be set up the own knowledge base in local something like that.
+
+[Hejun Wong] 16:56:01
+Oh, okay.
+
+[Tao Song] 16:56:01
+So we said have the local the deep state server and the knowledge base, those kind of things yeah But it's not publicly sharing across the company, you know.
+
+[Hejun Wong] 16:56:15
+Okay then so it's not like user facing off. It's not facing your customers
+
+[Tao Song] 16:56:20
+Yeah, yeah. It's like internal use only.
+
+[Hejun Wong] 16:56:24
+I see. Okay. Let me see sample inflates.
+
+[Hejun Wong] 16:56:34
+Ciso sample M3's database within sample m3's database there's this collection called embedded movies.
+
+[Hejun Wong] 16:56:42
+So within each document you will see that there is a code embedding field.
+
+[Hejun Wong] 16:56:49
+They're OD stars. The… embeddings this plot field.
+
+[Hejun Wong] 16:56:59
+Okay, so they have red through they have identified that I want to search across this product field and now i have
+
+[Hejun Wong] 16:57:14
+So now I'm at this part where I will send a port field over to the third-party AI model, generate the embeddings, install the embeddings into this per embedding field.
+
+[Hejun Wong] 16:57:29
+Okay, so here it is stopped here
+
+[Hejun Wong] 16:57:37
+So you can use this collection And you can use the vector search
+
+[Hejun Wong] 16:57:46
+To find a movie with the title titanic. But once you have this title you will need to be able to convert this query into the query vectors as well.
+
+[Hejun Wong] 16:58:01
+So that you can find all the documents with the title similar to Titanic.
+
+[Hejun Wong] 16:58:15
+But let's keep this exercise because we will need uh another trigger to fire the trigger to convert this query to an embedding Okay, so far do you understand the generic field of how we can use MongoDB to store vectors and after that use vector search to
+
+[Hejun Wong] 16:58:35
+Set across two different sets of vector embeddings. Yeah, okay.
+
+[Hejun Wong] 16:58:45
+Okay, then like I shared earlier. So RAC, you can use it together with your vector search.
+
+[Hejun Wong] 16:58:52
+So you retrieve all the similar documents you add it together with the prompt and feed it to the large english model and you get back and unselfish is more relevant to your company and you reduce hallucination.
+
+[Hejun Wong] 16:59:09
+So this is like the basic architecture it doesn't differ much from the diagram that I shared earlier.
+
+[Hejun Wong] 16:59:21
+Okay, so any questions on vector search for now?
+
+[Hejun Wong] 16:59:28
+Okay, then let's move on to the dedicated search notes.
+
+[Hejun Wong] 16:59:35
+So dedicated search nodes allows us to have better resource optimization.
+
+[Hejun Wong] 16:59:41
+Better performance and high availability. So by default, it comes in ha because It forces you to choose at least two search notes.
+
+[Hejun Wong] 16:59:51
+And you can go up all the way up to 32 session.
+
+[Hejun Wong] 16:59:55
+Okay, so minimum two that's why you'd have ha and your search queries will now be routed to your search notes.
+
+[Hejun Wong] 17:00:03
+And your search logs will run your mongoT process. Install your search indexes.
+
+[Hejun Wong] 17:00:10
+Whereas your MongoDB custom will continue to run your mongod process as well as your normal database indexes Okay, so you will be able to isolate your search workbook to these search notes.
+
+[Hejun Wong] 17:00:29
+Okay, so that's a quick site on dedicated sectionals.
+
+[Hejun Wong] 17:00:35
+Okay, so I don't have a kahoot for vitals such as an ever search so let's jump straight to the quiz.
+
+[Hejun Wong] 17:00:42
+In which of the three scenarios would you use AgileSearch versus a MongoDB query?
+
+[Hejun Wong] 17:01:13
+And the key difference is that For MongoDB query you know one yacht exactly refinding.
+
+[Hejun Wong] 17:01:19
+Whereas for agile search, you're open to You are not so sure about the results and you're open to like citations.
+
+[Tao Song] 17:01:31
+Abc.
+
+[Hejun Wong] 17:01:35
+Abc. Yes, ABC is correct. Actually, just one more.
+
+[Hejun Wong] 17:01:49
+So this one d is the only query that we know exactly what we are looking for whereas the rest we are open to like suggestions Okay, so we should use ABC E.
+
+[Hejun Wong] 17:02:04
+For agile search and d for mongodb query Oops.
+
+[Hejun Wong] 17:02:13
+Question two. Vector search enables switch free features.
+
+[Tao Song] 17:02:26
+A, C, D.
+
+[Hejun Wong] 17:02:29
+Bcda. A, C, D. Yes, correct.
+
+[Tao Song] 17:02:31
+I-c-p.
+
+[Hejun Wong] 17:02:36
+Okay, so actually i don't i don't even know what's a temporal analysis.
+
+[Hejun Wong] 17:02:40
+Yeah, but structured queries is meant for normal database searches.
+
+[Hejun Wong] 17:02:47
+So far vector search you can actually store your search images.
+
+[Hejun Wong] 17:02:54
+Or even audio files as vectors then with that stock inspectors, you can actually perform searches on images and even audio files.
+
+[Hejun Wong] 17:03:06
+Okay, so to recap, IRSearch is feature that creates indexes to support search using Apache Lucy.
+
+[Hejun Wong] 17:03:15
+Our search results are by default scored and you have written us the highest score
+
+[Hejun Wong] 17:03:21
+Top. So there can be many operators that we can use and combine And a key capability of IOC will be to have auto-compete capabilities in the name and highlighting and even like Typo.
+
+[Hejun Wong] 17:03:36
+Okay, so that's ever search for vector search, it allows you to search through your data based on semantic, meaning captured within your vectors.
+
+[Hejun Wong] 17:03:47
+Okay, so this is uh summary on other search and vector search.
+
+[Hejun Wong] 17:03:54
+Okay, with that. We have come to the end of today's session.
+
+[Hejun Wong] 17:03:59
+So as a quick review. The first key takeaway for today will be number of indexer stopped perfection is four so keep it to a that is legal 10.
+
+[Hejun Wong] 17:04:16
+Second is your esr guideline should be used when you're creating a compound index.
+
+[Hejun Wong] 17:04:24
+So every additional compound index or singles few index that you create creates an additional 10% overhead in your write operations So always be mindful when creating additional indexes.
+
+[Hejun Wong] 17:04:39
+Then always look out for unused indexes or redundant indexes. So you can delete your redundant indexes And for indexes that you want to But you're not so sure yet you can choose to hide them first.
+
+[Hejun Wong] 17:04:56
+So when you choose to hide them first they are still being updated whenever there's a data change but your fine operations or your update operations will not be able to use these indexes.
+
+[Hejun Wong] 17:05:08
+So it's very easy to unhide it. Whereas it takes a long time to build your index okay so that's one of the best practice to hide your index first before you actually your index.
+
+[Hejun Wong] 17:05:23
+Then after that we learned about how to find pseudo operations where to find them and how to analyze our locks to fish for super patrons can we find queries that are performing in memory sorts. We also learn about matrix.
+
+[Hejun Wong] 17:05:43
+The different types of metrics available to monitor our database cluster.
+
+[Hejun Wong] 17:05:48
+Aiden, I know you've learned about error search and vector search.
+
+[Hejun Wong] 17:05:53
+Do you have any questions for me?
+
+[Hejun Wong] 17:06:06
+Okay. If there are no questions, then our, oh, sorry, Tony, go ahead
+
+[Tony Lin Yi-Siang] 17:06:09
+Both. So which means… A vector search also recommend using the search node right Oh, good.
+
+[Hejun Wong] 17:06:20
+Your vector search index will also be stopped on the search notes.
+
+[Hejun Wong] 17:06:30
+Yeah, so your search and your vector search index will all of you start in your dedicated sessions.
+
+[Tony Lin Yi-Siang] 17:06:42
+Okay.
+
+[Hejun Wong] 17:06:43
+Okay. So before we end.
+
+[Hejun Wong] 17:06:47
+Just a quick reminder to go to our learning platform learn.mongodb to complete The quiz for NDB 200 as long as the customer satisfaction survey.
+
+[Hejun Wong] 17:07:01
+Can I check if for those who have completed yesterday's survey and quiz, they'll receive like a certificate credibility batch.
+
+[Hejun Wong] 17:07:11
+Okay. All right, that's good.
+
+[Tao Song] 17:07:11
+Yeah, I betch.
+
+[Hejun Wong] 17:07:14
+Okay, then for Tony and Gigi, y'all might want to run the sizing script.
+
+[Hejun Wong] 17:07:23
+But before you run the sizing script, you all need to create a new user and use the user at least these permissions to run the script.
+
+[Hejun Wong] 17:07:34
+So that you can get the data Then once you have the results for each cluster. You can name them output1.json, output2.json you can send me your JSON files and i can send it to the SA for them to edit.
+
+[Hejun Wong] 17:07:51
+Analyze your clusters to see whether they are right resized.
+
+[Tony Lin Yi-Siang] 17:07:56
+No, I run the query, but I didn't run by by the command.
+
+[Tony Lin Yi-Siang] 17:08:02
+So the JSON is truncated. I didn't output the JSON.
+
+[Hejun Wong] 17:08:07
+I don't understand. Okay, okay.
+
+[Tony Lin Yi-Siang] 17:08:11
+I just run in the compass.
+
+[Hejun Wong] 17:08:15
+Okay, yeah. So you should try to… I'll put it into a JSON file. Then you pass me the JSON file.
+
+[Tony Lin Yi-Siang] 17:08:17
+Hmm. Yeah.
+
+[Tony Lin Yi-Siang] 17:08:23
+Hmm.
+
+[Hejun Wong] 17:08:23
+You know dedicated we can help take a look to see whether your cluster is rightly sized to see whether there are a chance for us to help save money
+
+[Tony Lin Yi-Siang] 17:08:33
+Okay. Do I have your email? Oh, yes. Okay.
+
+[Hejun Wong] 17:08:34
+Yeah.
+
+[Tony Lin Yi-Siang] 17:08:39
+No problem.
+
+[Hejun Wong] 17:08:40
+Should I have. Jada, I think tomorrow you'll be meeting my colleagues as well as my boss Yeah, so… have a good meeting then i'll see the rest of you Next week.
+
+[Tony Lin Yi-Siang] 17:08:49
+Yes.
+
+[Tony Lin Yi-Siang] 17:08:56
+Oh, and, and… we ask some problem.
+
+[Hejun Wong] 17:08:56
+Oh, yeah.
+
+[Tony Lin Yi-Siang] 17:09:03
+Before so you will send email or tell us in the Next class.
+
+[Hejun Wong] 17:09:09
+Yes, I'll do that. Yeah, I've noted down the question, so we're on that.
+
+[Tony Lin Yi-Siang] 17:09:13
+Okay.
+
+[Hejun Wong] 17:09:17
+I will also raise an internal help ticket on the rolling index view.
+
+[Hejun Wong] 17:09:23
+Yeah, of course for hours we don't.
+
+[Hejun Wong] 17:09:29
+Take the secondary node offline like we don't remove it from the replica set So I want to seek clarity from internal team as to why we are removing suggesting the removal of Secondary note from the replica set.
+
+[Hejun Wong] 17:09:44
+When performing an index build. So our research internal health ticket And I'll let you know the outcome Yeah, but for a step the I must manage your expectation is that usually when we give recommendations, we cannot deviate too much from the
+
+[Hejun Wong] 17:10:00
+The documentation. Yeah so like me, they were just telling me that no you just tell the customer do what is recommended because that is like the most if that's like the safest way Yeah, but I'll let you know what's the outcome and if there are any additional information I can share, I will let you know.
+
+[Tony Lin Yi-Siang] 17:10:21
+Okay.
+
+[Hejun Wong] 17:10:22
+Okay, then thank you
+
