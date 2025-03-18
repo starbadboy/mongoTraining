@@ -1,0 +1,3484 @@
+[Hejun Wong] 09:18:58
+Attorney is decommissioned. So if you are using all these commands, next time it will not be available anymore.
+
+[Hejun Wong] 09:19:07
+Then for curable encryption because it became GA in 7.0 if you are using the public preview version in 6.0, it will become incompatible and you will not be able to use them. So when you upgrade your server.
+
+[Hejun Wong] 09:19:21
+You have to check this list of compatibility changes on the database end.
+
+[Hejun Wong] 09:19:27
+As well as the driver's end. So the release notes were all changes that are both applicable for your DBAs as well as your developers.
+
+[Hejun Wong] 09:19:39
+So it's important for both teams to take a look at both documents.
+
+[Hejun Wong] 09:19:51
+Let's go through the… replication process within MongoDB.
+
+[Hejun Wong] 09:19:57
+So we achieve HA by the use of a replica set. So replica set is a group on MongoD instance that will host your data. So you have a primary node that holds data and the secondary node that holds data. So all three nodes will host your data
+
+[Hejun Wong] 09:20:18
+And in this case. When your primary receives your reads and write operations.
+
+[Hejun Wong] 09:20:25
+All these operations are returned into the premise on block and the changes are applied.
+
+[Hejun Wong] 09:20:33
+To the secondaries asynchronously. Okay, so it is not a synchronous process. It's asynchronous process So that's why when you look at your matrix within your the address user interface or if you are using another tool to monitor your database
+
+[Hejun Wong] 09:20:52
+You'll notice that there may be replication right on your secondary node.
+
+[Hejun Wong] 09:20:56
+And that's because the changes are applied asynchronously.
+
+[Hejun Wong] 09:21:04
+So this is like the slightly more detailed process and steps.
+
+[Hejun Wong] 09:21:09
+First, your applications will write. All the changes to the primary node.
+
+[Hejun Wong] 09:21:14
+The primary node will apply the changes at this time t and record them into this operation log.
+
+[Hejun Wong] 09:21:21
+Which we call envelope. Your secondary nodes are observing this overlook So they are tailoring this obnox.
+
+[Hejun Wong] 09:21:29
+And they will read all the changes up to the time T.
+
+[Hejun Wong] 09:21:35
+So to apply the new changes up to the time key to themselves, to their own ad block so they record them into their own block.
+
+[Hejun Wong] 09:21:45
+After which they are done, then they will request the next set of information so information after time t.
+
+[Hejun Wong] 09:21:53
+So because they will request that information from their primary after time key The primary will know when was the latest time they requested for the information.
+
+[Hejun Wong] 09:22:03
+Okay, so… when you write type the command replica set rs.status you will be able to see from the primary, what is the replication like?
+
+[Hejun Wong] 09:22:14
+And when was the last time the secondary node requested for the latest information.
+
+[Hejun Wong] 09:22:23
+So far, any questions? Okay.
+
+[Hejun Wong] 09:22:29
+All right, then let's move on to oblog. So the operation log is a read-only cap.
+
+[Hejun Wong] 09:22:35
+Collection of BSON documents. Can't miss that.
+
+[Hejun Wong] 09:22:39
+It has a fixed size. And when he has a fixed size, when the data has filled the entire outblock.
+
+[Hejun Wong] 09:22:48
+How new records come in would be. To remove the older data.
+
+[Hejun Wong] 09:22:53
+Okay, so once it has reached the fixed size the old data will be automatically deleted.
+
+[Hejun Wong] 09:23:02
+So you'll just move it's a moving window. And each time there's a write operation.
+
+[Hejun Wong] 09:23:09
+Which changes a document or change your collection or database it is recorded in the ad block.
+
+[Hejun Wong] 09:23:18
+So when you drop a collection or you create an index, all these changes because they will change the structure of document or collection or database all these changes are written into the onboard.
+
+[Hejun Wong] 09:23:33
+And you can find it within a database called local and the collection is among the Rs.
+
+[Hejun Wong] 09:23:43
+Let me share my entire screen.
+
+[Hejun Wong] 09:23:51
+Okay, so here. Within my search demo cluster, you will see that within my local database there is this collection called oblog.rs.
+
+[Hejun Wong] 09:24:03
+They saw thers. Will exist if it is a replica set.
+
+[Hejun Wong] 09:24:10
+Even if you only have a single member replica set you will have an Outlook. If it's a standalone instance.
+
+[Hejun Wong] 09:24:17
+Then you will not have an overlook. Okay, so minimally it's a replica set then you will have So this is the structure of an all block.
+
+[Hejun Wong] 09:24:27
+He will tell you, oh, what's this operation? D will mean dv. What's the namespace that it's targeting?
+
+[Hejun Wong] 09:24:34
+What are the details of the change? What's the timestamp? What's the workload time.
+
+[Hejun Wong] 09:24:40
+Okay, so these are some of the information you can find in the omn.
+
+[Hejun Wong] 09:24:49
+So what does this mean? That it is independent of the database binary form.
+
+[Hejun Wong] 09:24:54
+So it means that the log statements or the changes recorded in the log
+
+[Hejun Wong] 09:25:04
+They're actually logical statements and not like chunks of files So because it's a logical statement You can use it to use it rapid it and change it to different formats and versions That's why we have third-party tools they are able to read
+
+[Hejun Wong] 09:25:23
+An outblock and also from the public be able to process the information found within the artwork.
+
+[Hejun Wong] 09:25:35
+So we did the odd block one entry will reflect a change.
+
+[Hejun Wong] 09:25:43
+Okay, so usually every entry in your order, all right?
+
+[Hejun Wong] 09:25:48
+You will use the underscore id as a point of reference.
+
+[Hejun Wong] 09:25:54
+When you're making changes to a single document. And when you perform like when you perform drop correction.
+
+[Hejun Wong] 09:26:06
+Or create index. So when you drop a collection it is a single record within the Outlook.
+
+[Hejun Wong] 09:26:15
+Okay, so that's why Uh… sometimes when you go meet MongoDB consulting engineer.
+
+[Hejun Wong] 09:26:27
+End up facing like this issue where we are performing large amounts of degree operations.
+
+[Hejun Wong] 09:26:34
+And because you're performing large amounts of daily operations. Your system is slowing down.
+
+[Hejun Wong] 09:26:44
+Let me show you.
+
+[Hejun Wong] 09:26:58
+So remember this diagram Whenever you have a write operation, whether is it a creation, update or delete.
+
+[Hejun Wong] 09:27:07
+You will always need to update all your indexes. So when you delete a lot of documents.
+
+[Hejun Wong] 09:27:13
+All these operations will be written into our cache and after that they will need to update all this data into this.
+
+[Hejun Wong] 09:27:20
+So on this level, it has to update your your data page as well as all your indexes indexes So when you have large amounts of delete operations you have to keep updating all this.
+
+[Hejun Wong] 09:27:35
+And because if there are many indexes then you will I'll be even more indexes and all this will take up time So it might be a very versatile operation to perform like large amounts of DV operations.
+
+[Hejun Wong] 09:27:48
+That's why sometimes we will recommend If you are able, if the developer site is able to write into a weekly collection or a monthly collection our yogi collection.
+
+[Hejun Wong] 09:28:01
+When you perform a drop collection operation. Instead of having multiple lines of entries within your own work for example say if your collection has 10 documents if you have to perform delete many you will see 10 entries within the artwork.
+
+[Hejun Wong] 09:28:22
+However, if you perform a drop collection. It's actually a single entry.
+
+[Hejun Wong] 09:28:28
+And that's why you it is an operation that's a lot faster them delete many.
+
+[Hejun Wong] 09:28:39
+So far, you understand this point? That when you drop collection, it is a lot more efficient as compared to delete menu.
+
+[Hejun Wong] 09:28:48
+Yes, Tony, go ahead.
+
+[Tony Lin] 09:28:51
+Is there any mechanism in MongoDB like transaction to package this action into one
+
+[Hejun Wong] 09:29:00
+Yes, there is. Okay, so… Within MongoDB, you will have transactions.
+
+[Hejun Wong] 09:29:11
+And that guarantees you that operations performed within this transaction uh there are Atomic.
+
+[Hejun Wong] 09:29:22
+Okay, so let's see here.
+
+[Tony Lin] 09:29:27
+Can you stop the multiple log records problem?
+
+[Hejun Wong] 09:29:28
+Y'all.
+
+[Hejun Wong] 09:29:37
+No. Yes, it is the same and actually transaction might take longer because it has to guarantee that the operations within that transaction either succeed or fail.
+
+[Tony Lin] 09:29:38
+So they are the stems. Okay.
+
+[Hejun Wong] 09:29:55
+Yeah. So in the Outlaw, right, if your transaction consists of insert two insert ones and your overlap is still two or entries.
+
+[Hejun Wong] 09:30:04
+Yeah. So the impact to your Outlaw is still the same. You will still have multiple bubble entries.
+
+[Hejun Wong] 09:30:14
+So maybe I briefly run through transactions so For transactions, usually we will need to start a transaction by starting a session Here.
+
+[Hejun Wong] 09:30:29
+Queso. Once you start a session Whenever you perform… and write operation.
+
+[Hejun Wong] 09:30:41
+So it can be insert one, update one, delete one or delete many, insert many.
+
+[Hejun Wong] 09:30:46
+You have to provide their session as well. Okay, so once you provide a session into your Right, operation. And once you're done you can In session.
+
+[Hejun Wong] 09:30:58
+And what happens if something goes wrong? So when something goes wrong.
+
+[Hejun Wong] 09:31:07
+Okay, so once you are done you can actually first commit first before you end your session And if something goes wrong you can actually tell the session tell the transaction to roll back Let me see this example here.
+
+[Hejun Wong] 09:31:25
+So transactions can either apply all data changes or roll back.
+
+[Hejun Wong] 09:31:32
+So usually developers will put it in the try-catch block. And within the catch block, if they detect an error they will roll back the transaction.
+
+[Hejun Wong] 09:31:45
+They don't have an example here, but later if i have time I will find an example and i'll show it Yeah.
+
+[Hejun Wong] 09:31:55
+So let's move on. I'll go ahead.
+
+[Tony Lin] 09:31:58
+The answer question is… When I use TTL index.
+
+[Tony Lin] 09:32:04
+Does it have the same action to write multiple logs in the
+
+[Tony Lin] 09:32:11
+Like I did many of. Okay.
+
+[Hejun Wong] 09:32:12
+Yes. Yes. So TTL indexes is pretty similar to your delete many operations.
+
+[Hejun Wong] 09:32:19
+So when you have a TTL index on, let's say a single document it will be like a delete one operation If the TTL index is impacting multiple documents like 10 documents then it is like deleting 10 documents and you will have 10 records in your book.
+
+[Hejun Wong] 09:32:45
+Okay. Okay, so in this slide.
+
+[Hejun Wong] 09:32:52
+The point that we like to emphasize would be there are idempotent So what does it mean? It means that The overall operation can be played multiple times And it can really be replayed.
+
+[Hejun Wong] 09:33:05
+And they will still get back the same results okay so even if you apply it once or multiple times He shouldn't get back the same result.
+
+[Hejun Wong] 09:33:16
+So for example, if your code is performing an increment So I want to increment A, the fuel a by a value of two so if A was previously equals to 3.
+
+[Hejun Wong] 09:33:33
+Incrementing a by 2 means that i want to set 8 to 5.
+
+[Hejun Wong] 09:33:40
+Okay, so on the alert level. The outward entries is actually reflecting this is actually running a set operation rather than a increment operation.
+
+[Hejun Wong] 09:33:51
+And the reason why they're used in running a set operation is that I can keep replaying this outblog set a equals to 5 multiple times.
+
+[Hejun Wong] 09:34:02
+And A will still be 5. And if A, if I'll do right increment a equals to 2 within the odd block.
+
+[Hejun Wong] 09:34:11
+Each time I replay, I'm actually incrementing a by a value of 2. And this is not something we want.
+
+[Hejun Wong] 09:34:17
+Okay, so it actually changes increment to the set operator such that if you were to replay this operation.
+
+[Hejun Wong] 09:34:26
+The result you get back will still be the same.
+
+[Hejun Wong] 09:34:34
+Okay, so let's go into our exercise. In this lab, we'll be deploying our own replica set and we will observe the overlap Okay, so within the exercise you will notice that there is only a single server is a single server running three MongoD processors.
+
+[Hejun Wong] 09:34:56
+Okay, so let's go ahead go into instruct
+
+[Hejun Wong] 09:35:02
+And start the challenge.
+
+[Hejun Wong] 09:35:11
+So once you have started the challenge your first step.
+
+[Hejun Wong] 09:35:16
+Will be to configure the replication section within the name of the replica set with the name of the replica set rs Okay, so… uncomment the quotes for replication and replica sent.
+
+[Hejun Wong] 09:35:32
+And set the replica set name to my irs.
+
+[Hejun Wong] 09:35:44
+Then take some time to look through the three config files.
+
+[Hejun Wong] 09:35:50
+So you should see three tabs
+
+[Hejun Wong] 09:36:45
+Okay, so this is an example of the Mongodi configuration file if you were to self-manage your mongoD your MongoDB clusters.
+
+[Hejun Wong] 09:36:58
+So with the config file then you will be able to start a MongoT process.
+
+[Hejun Wong] 09:37:02
+So how we start the process we'll just run the command mongod space dash config Then we'll provide the configuration file.
+
+[Hejun Wong] 09:37:12
+Okay, so… go ahead and run this command for the three config files. So ensure that you have uncommented reputation and set the replica set name for all three config files the value should be the same for all three config files.
+
+[Hejun Wong] 09:37:32
+Once you're ready you can start the MongoD process using the three Mongol the config files.
+
+[Hejun Wong] 09:37:44
+Okay, so once you have started the process let me know uh give me a thumbs up
+
+[Hejun Wong] 09:39:15
+Okay, all good so far. Anyone having issues?
+
+[Hejun Wong] 09:39:24
+Thanks, Tony.
+
+[Hejun Wong] 09:39:34
+Okay, thanks, Gigi. Cool.
+
+[Hejun Wong] 09:40:11
+Thanks, Sudin.
+
+[Hejun Wong] 09:40:18
+Thanks, Sungi.
+
+[tao song] 09:40:34
+I'm very sure unrecognized option replication.
+
+[Hejun Wong] 09:40:38
+Oh, do you want to share screen?
+
+[Hejun Wong] 09:41:04
+Can I see the config tool? Oh, this is conflict one.
+
+[tao song] 09:41:13
+Let's uncomfortable.
+
+[Hejun Wong] 09:41:15
+Yeah. Okay. That one.
+
+[Hejun Wong] 09:41:23
+In the terminal.
+
+[Hejun Wong] 09:41:32
+930. Can you go back to config one?
+
+[Hejun Wong] 09:41:39
+Leave a space before my RS. Okay, let's wait a while. Then let's try again.
+
+[Hejun Wong] 09:41:49
+Go back to terminal, then try running. Okay.
+
+[tao song] 09:41:52
+Space. Okay. Thank you.
+
+[Hejun Wong] 09:41:54
+Oh, you have to do it for config 2 and 3 as well.
+
+[tao song] 09:41:57
+Okay.
+
+[Hejun Wong] 09:42:18
+Okay. Okay, let's take a look at the config file. So there are a few options where we can set So first is related to storage Second is system lock.
+
+[Hejun Wong] 09:42:31
+That is on your network interfaces. The fourth is our process management.
+
+[Hejun Wong] 09:42:37
+There are others as well like replication, sharding security so and so forth.
+
+[Hejun Wong] 09:42:41
+Okay, so let's look at the first one. Storage.
+
+[Hejun Wong] 09:42:46
+Within storage we can set the database path So this is the path within your server where you will host the data files the white tiger pages.
+
+[Hejun Wong] 09:42:58
+Okay so here we are setting at MongoD1, Mongodi slash 1 slash dbt.
+
+[Hejun Wong] 09:43:05
+If you look at the config tool design slash tool config three design slash tree.
+
+[Hejun Wong] 09:43:11
+Okay, so they are all residing on the same server that's why we are We're using Scratch 1, Scratch 2, and slash 3.
+
+[Hejun Wong] 09:43:18
+Then the next thing to know is here we are setting the riot tiger sized So remember previously we mentioned that by default white tiger will take up about 50% of your Okay, so here we're actually setting the white tiger cast size because if not by default you take up half
+
+[Hejun Wong] 09:43:40
+Of your server RAM. But now we are running all three process on the same server we need to limit the case size.
+
+[Hejun Wong] 09:43:46
+So by setting 0.3 gig Welcoming me to say, okay, this process the maximum number of cash you can grow is 0.3.
+
+[Hejun Wong] 09:43:57
+Gigabytes. Okay, so this is if you are running The Mongodi process on the same server, which we don't recommend in the production setup because if one server goes down then of your MongoD process.
+
+[Hejun Wong] 09:44:13
+Processors will go down. Okay, so this is the first part. Second part, system log.
+
+[Hejun Wong] 09:44:18
+So here we are defining that your log file is a file and you just keep appending into the log file and this is a path to your MongoD log.
+
+[Hejun Wong] 09:44:30
+Okay, so here's slash one as well. Process two and three will be slash two and slash 3.
+
+[Hejun Wong] 09:44:36
+Okay, the next one that you will need to know Notice this part number So, Rita, when you Mongo shell into this process or In this case, you can treat it as a mongod instance or in Mongodi node you always need to provide the port number
+
+[Hejun Wong] 09:44:57
+Okay, so the first process will run on.
+
+[Hejun Wong] 09:45:02
+Second process. And third process 002.
+
+[Hejun Wong] 09:45:09
+So this is a key thing to note. Within this config file.
+
+[Hejun Wong] 09:45:14
+Okay, so by IP will just mean that How are you which IPs are you allowing into your to interact with your instance right now.
+
+[Hejun Wong] 09:45:28
+The other common options would be to set a time zone info And whether setting fog to true or not.
+
+[Hejun Wong] 09:45:37
+Okay, so this will determine whether it will be… Uh… showing up in your terminal and whether it will just keep running Okay, so Jisan, when Flock is set to true, it will run the background.
+
+[Hejun Wong] 09:45:59
+Then finally, replication, where we define our replica set name So here we have started all three Mongoty processors. Let's go back to our slide.
+
+[Hejun Wong] 09:46:13
+Next step will be to initialize or initiate your epic asset.
+
+[Hejun Wong] 09:46:20
+Okay, so this is the command to run Let me… copy and paste into the chat.
+
+[Hejun Wong] 09:46:34
+Okay, so essentially we are going to initiate the replica set.
+
+[Hejun Wong] 09:46:39
+What's her name? And who are the members within the rapid asset.
+
+[Hejun Wong] 09:46:44
+So there are three members now. Local host 2700.
+
+[Hejun Wong] 09:46:49
+Second one 001, and third one 002. So once you initiate the replica set.
+
+[Hejun Wong] 09:46:57
+You should get back an okay one You also can try on your end right now.
+
+[Tony Lin] 09:48:17
+I also should comment lockdown.
+
+[tao song] 09:48:22
+It will run the main one first. The Mongoli means something.
+
+[Hejun Wong] 09:48:29
+Oh, let me check. Oh, yes, yes, yes. Sorry, we need to Mongol shell into one of the process first.
+
+[Tony Lin] 09:48:37
+So, okay, okay.
+
+[Hejun Wong] 09:48:39
+Yeah. So… The commander will be at the top mongo shell then provide the post.
+
+[Hejun Wong] 09:48:49
+You can use the first host
+
+[Tony Lin] 09:48:55
+Success.
+
+[Hejun Wong] 09:48:57
+All right.
+
+[Hejun Wong] 09:49:27
+Once you log in. You might see that, oh, previously I was
+
+[Hejun Wong] 09:49:37
+On the other status then after which my note became a secondary you know it's also to check What is this node? Because now I have Mongol shell into the first node 2700.
+
+[Hejun Wong] 09:49:52
+I can actually check run mongo rs.status.
+
+[Hejun Wong] 09:50:00
+And we do the members array I will be able to see, oh, okay, now I'm on zero zero the state is the secondary node.
+
+[Hejun Wong] 09:50:09
+001 is a secondary node. Zozy O2 is a primary node.
+
+[Hejun Wong] 09:50:19
+Okay.
+
+[Hejun Wong] 09:50:23
+Okay, then before moving on, so just now we initiated this replica set.
+
+[Hejun Wong] 09:50:29
+By defining who are the members. There are other ways to initiate a replica set.
+
+[Hejun Wong] 09:50:35
+For example, rs.
+
+[Hejun Wong] 09:50:42
+Okay, so rs.app you can menu and one by one add your members in Using this rs.ad command as well.
+
+[Hejun Wong] 09:50:53
+Okay, so let's go back to the slide.
+
+[Hejun Wong] 09:50:59
+The next step. Will be to create a rag operation on the primary server After which, switch your tab.
+
+[Hejun Wong] 09:51:10
+That means we didn't instruct use terminal two and not into a secondary host.
+
+[Hejun Wong] 09:51:17
+Query for the inserted record In the namespace that you created that record in.
+
+[Hejun Wong] 09:51:24
+Then after that try to write perform a write operation on the secondary node.
+
+[Hejun Wong] 09:51:30
+Okay, so just now when we ran rs. Status we know which is our primary node now.
+
+[Hejun Wong] 09:51:40
+So on the terminal one Mongo shell into the primary node.
+
+[Hejun Wong] 09:51:46
+So if you are on the second note now you can type exit Then after which Mongo shell into the primary node.
+
+[Hejun Wong] 09:51:57
+And you should see this Direct Premiere.
+
+[Hejun Wong] 09:52:05
+After logging in. Okay, so I'll show the slides again.
+
+[Hejun Wong] 09:52:12
+You can type the comment here change the database context to test database use test and insert a record into the customer collection.
+
+[Hejun Wong] 09:53:26
+The command that I type in will not be valid because of the double quote
+
+[Hejun Wong] 09:54:09
+Let me see in the back yet.
+
+[Hejun Wong] 09:54:52
+Oh, sorry. No, there's a typo in the absurd.
+
+[Hejun Wong] 09:55:05
+Okay, insert that as one. Sorry for the many mistakes there.
+
+[Hejun Wong] 09:55:31
+What it does is actually you will first find whether the record exists within the collection.
+
+[Hejun Wong] 09:55:40
+If it exists, it will update the company name to ABC Corp.
+
+[Hejun Wong] 09:55:46
+If it doesn't exist, it will insert. The record.
+
+[Hejun Wong] 09:55:51
+That's why it is absurd. So it's update plus an insert.
+
+[Hejun Wong] 09:56:02
+Then Mango shell into a secondary Note in terminal two.
+
+[Hejun Wong] 09:56:40
+And when you go into the test db and you find a record it should exist within the secondary node. So the record has been replicated to the secondary node.
+
+[Hejun Wong] 09:56:53
+After which, try to perform a write operation on the secondary note.
+
+[Hejun Wong] 09:57:13
+And you will get an error that says that you are not allowed to write Because this is not a primary note.
+
+[Hejun Wong] 09:57:22
+Okay, so the everyone get this error?
+
+[Hejun Wong] 09:57:28
+Okay, then let's move on.
+
+[Hejun Wong] 09:57:34
+Next, let's view the op mug. Okay, so the all block can be found within the local database unlock the rs collection.
+
+[Hejun Wong] 09:57:45
+Okay, so… for the re-operation and right operation to be replicated.
+
+[Hejun Wong] 09:57:50
+For the right operations to be replicated onto the secondary notes. The secondary notes will tell the ob block for the primary note.
+
+[Hejun Wong] 09:57:58
+And you will apply the operation into their own overlap. Okay, so let's go into the overlap to understand how the record is created in the primary No.
+
+[Hejun Wong] 09:58:15
+How the record created in the primary node is on the secondary node. So we actually finding the record within the Second note. So use the terminal tool.
+
+[Hejun Wong] 09:58:32
+So use local and db.onworld.rs.findone. And the namespace you are targeting would be in the test.customer Any space.
+
+[Hejun Wong] 09:59:24
+Okay, so we'll see that it is uh insert operation on the test.customer namespace Okay, so…
+
+[Hejun Wong] 09:59:37
+This is the object that we are inserting.
+
+[Hejun Wong] 09:59:44
+This is the timestamp. This is the walk timing
+
+[Hejun Wong] 09:59:56
+So if I feel so good? Okay.
+
+[Hejun Wong] 10:00:11
+Next, when you run db.og.rs.find1 namespace. And here we are running an in operator. So the in operator will accept an array of values in this case an array of strings.
+
+[Hejun Wong] 10:00:26
+So the strings we want to target the namespaces test.customer and test.
+
+[Hejun Wong] 10:00:32
+Double command. Okay, so the dollar command will show that show the internal database command that created the customer collection.
+
+[Hejun Wong] 10:00:45
+Okay, so you can go ahead and try running this
+
+[Hejun Wong] 10:00:51
+The command will just show that when we are creating the new document, it first has to create the new collection.
+
+[Hejun Wong] 10:02:32
+Okay, once you're done you can switch over to the switch tab, go into the primary server Then you can view the overlook within the primary server.
+
+[Hejun Wong] 10:02:46
+And you can verify that the online record is exactly the same as the one in the secondary node.
+
+[Hejun Wong] 10:03:16
+Okay. Okay, so… One more point that I wanted to share was When you look at the unworked record.
+
+[Hejun Wong] 10:03:27
+Can you guess which is the primary key?
+
+[Jrting Shiau] 10:03:44
+Oh.
+
+[Hejun Wong] 10:03:44
+And the primary key is actually
+
+[tao song] 10:03:49
+Jesse's LSID.
+
+[Hejun Wong] 10:03:53
+Yeah, very close. It's actually this uid Yeah, so it's within the ls id the uid so uid This is the primary key for online records.
+
+[Hejun Wong] 10:04:05
+So it is not the… the usual underscore id fuel for your mongodb collections okay so your uid is the primary.
+
+[Hejun Wong] 10:04:18
+So every MongoDB server version might have slightly different augment stretcher.
+
+[Hejun Wong] 10:04:27
+Okay so for example In MongoDB 8.0,
+
+[Hejun Wong] 10:04:36
+They've made some changes to the operational log structure
+
+[Hejun Wong] 10:04:50
+So here, starting in 8.0 within your Oh, wow.
+
+[Hejun Wong] 10:05:00
+Entries there are some changes. So they will remove this for some operations you won't see this matrix replication buffer count they will all be replaced by this matrix is thick.
+
+[Hejun Wong] 10:05:16
+Okay, so for like some third-party tools if they are using they are reading the old blog to apply changes to their end.
+
+[Hejun Wong] 10:05:24
+They will need to modify their codes to ensure that Yeah.
+
+[Hejun Wong] 10:05:31
+Application wouldn't break. We have MongoDB 8.0.
+
+[Hejun Wong] 10:05:39
+Next, let's talk about unlock window. Just now we mentioned omglog.
+
+[Hejun Wong] 10:05:44
+It is a cap collection so it's fixed in size And you are guaranteed the insertion order it helps to support high throughput operations.
+
+[Hejun Wong] 10:05:56
+And once it is filled, it will make room for new documents by deleting the oldest document in the collection.
+
+[Hejun Wong] 10:06:03
+Just like a circular buffer. And it's important to size the outlook accordingly.
+
+[Hejun Wong] 10:06:13
+Because it should be large enough to support replication and large enough to have history for any history for any diagnostics that you might want to perform.
+
+[Hejun Wong] 10:06:25
+Essentially, it should be large enough such that if one of your secondary node goes down.
+
+[Hejun Wong] 10:06:34
+The upload window should be large enough for you to recover The secondary node allow it enough time to catch up with the primary so that it doesn't have to perform an initial sync.
+
+[Hejun Wong] 10:06:47
+Which we will talk about in the next slide. Okay, so… In general, the recommendation is to ensure that your overlap window is at least three days.
+
+[Hejun Wong] 10:06:59
+72 hours. And we went through quite three days because if a database administrator were to go home on a Friday evening.
+
+[Hejun Wong] 10:07:06
+Having three days buffer will allow them to resolve the issue when they return on a mundane on Monday morning.
+
+[Hejun Wong] 10:07:19
+Okay, so why do we want to avoid initial sync. And what is initial sync?
+
+[Hejun Wong] 10:07:27
+So for initial sync, when you have a new replica set member or replacement replica set member.
+
+[Hejun Wong] 10:07:33
+It needs a full copy of your whole data. Okay, so if you're precast member.
+
+[Hejun Wong] 10:07:41
+Is down and has fallen off the odd block which means that it cannot catch up with the primary node now we will need to perform an initial sync.
+
+[Hejun Wong] 10:07:51
+An initial sync can take a long time. And on a large system, it is actually quite fragile.
+
+[Hejun Wong] 10:07:59
+But with changes made. To version 4.2 and 4.4 onwards is slightly more resilient but in general we still always want to avoid.
+
+[Hejun Wong] 10:08:10
+The initials in. Because it is a long process and it takes up a lot of your database resource.
+
+[Hejun Wong] 10:08:17
+So previously we could only read from a primary node to get the primary nodes data by doing the initial thing we can actually reduce the load on the primary node by using a secondary node as the sauce.
+
+[Hejun Wong] 10:08:33
+Yes, Song Tao, go ahead.
+
+[tao song] 10:08:37
+May I know for the upload do we have index? Okay.
+
+[Hejun Wong] 10:08:41
+No. Okay, so… Good question.
+
+[Hejun Wong] 10:08:46
+Collection. It is a read-only collection without index.
+
+[Hejun Wong] 10:08:51
+So actually, if you are to perform a read operation On it, it is a slow process because it will mean that now you're using collection scan.
+
+[Hejun Wong] 10:09:02
+Yeah. So that's why we… don't recommend applications.
+
+[Hejun Wong] 10:09:11
+To go read your unlock costs, it will slow down your whole system.
+
+[Hejun Wong] 10:09:17
+Yeah, but red.
+
+[tao song] 10:09:17
+So it's not recommended with user table to track the update and those things right
+
+[Hejun Wong] 10:09:23
+Okay, so secondary notes will track the changes within your op log by tilting the log. So it's actually reading the overlook But because it is not indexed, what they are actually doing right is they will query by a specific namespace
+
+[Hejun Wong] 10:09:42
+And they were scanned in reverse order And they will apply some limitations like a limit so that they don't read too many records and this helps make the read operation faster.
+
+[Hejun Wong] 10:09:57
+Yeah, so there are a few steps they do to ensure that when reading the Omar collection it is an operation that is not so expensive.
+
+[Hejun Wong] 10:10:07
+Yeah, so that's what the secondary notes do. But for a normal application, we would not recommend you to connect to the online collection to read the collection. Yeah.
+
+[tao song] 10:10:18
+So for the MongoDB change stream is also gather data from our blog.
+
+[Hejun Wong] 10:10:24
+Yes, correct. That's right. So for change streams the Okay, so for change trees you can change watch collection.
+
+[tao song] 10:10:27
+Okay.
+
+[Hejun Wong] 10:10:37
+Database or deployment. And what they are actually doing is the opening chain stream cursor NDR.
+
+[Hejun Wong] 10:10:47
+Just observing. And watching the outblock for the targeted namespace.
+
+[Hejun Wong] 10:10:53
+So just like i mentioned right jail when the Secondaries queried about they might just query by a specific namespace so they don't fetch too many documents And they scan it in reverse order.
+
+[Hejun Wong] 10:11:07
+Yeah, so by the latest document that come in Yeah, so Change Dream is something similar. They are observing the odd block by opening a chainstream cursor And they will watch the namespace and if there are changes made to the namespace they are looking at then they will
+
+[Hejun Wong] 10:11:25
+Inform the reason of the change stream the one consuming the change information yeah
+
+[tao song] 10:11:34
+Okay, okay, thank you.
+
+[Hejun Wong] 10:11:36
+Yeah, welcome. Yes, go ahead.
+
+[Jrting Shiau] 10:11:39
+I have a question. Or upload i see that there has the timestamp and then because for this exercise in the same machine so if layer has the primary and secondary delay, can we observe from the timestamp?
+
+[Hejun Wong] 10:11:47
+Hmm.
+
+[Hejun Wong] 10:12:05
+Hmm. Let me get back to you on this.
+
+[Hejun Wong] 10:12:10
+Because I believe the timestamp should be the timestamp of that Operation.
+
+[Hejun Wong] 10:12:16
+And not the replication timestamp. I will note this question down first.
+
+[Jrting Shiau] 10:12:22
+Okay.
+
+[Hejun Wong] 10:12:23
+Can we observe.
+
+[Hejun Wong] 10:12:55
+Okay, so now If you look at my screen, I'm in a secondary note.
+
+[Hejun Wong] 10:13:01
+So in every node you can run replica set dot status And this will return you the information of the replica set based on these secondary nodes point of view.
+
+[Hejun Wong] 10:13:16
+Okay, so from this second notes point of view, you will be able to see what is the…
+
+[Hejun Wong] 10:13:26
+Last heartbeat time.
+
+[Hejun Wong] 10:13:31
+And when was the…
+
+[Hejun Wong] 10:13:37
+Lass. Operation time that they ingested.
+
+[Hejun Wong] 10:13:44
+Okay, so they will have all this information of other notes as well as their own notes.
+
+[Hejun Wong] 10:13:59
+I will check whether the timestamp is something we can use to observe replication right but usually we use other deep refused to observe replication, right?
+
+[Hejun Wong] 10:14:23
+Okay, then let's proceed. Okay, so… Let's go to the first kahoot for today.
+
+[Hejun Wong] 10:15:52
+First answer is actually reduce your write latency And there's not a reason for replication. So the three reasons for replication would be first to reduce your read latency support different access patterns as well as to achieve higher liberty.
+
+[Hejun Wong] 10:16:12
+All right. Shreya talk a bit about
+
+[Hejun Wong] 10:16:26
+Oh. Okay, so we just did this exercise on Instruct. We are not able to perform any write operations on the secondary node. We can only perform write operations on the primary node.
+
+[Hejun Wong] 10:16:41
+Feng Dong has taken over.
+
+[Hejun Wong] 10:16:57
+Yeah, so just now I was trying to emphasize this point when you are If your collection has five documents.
+
+[Hejun Wong] 10:17:04
+When you run a drop collection command. It actually generates just one it doesn't generate five entries for the five documents that are being deleted.
+
+[Hejun Wong] 10:17:19
+So… dropping correction is a far more efficient way to remove data quickly.
+
+[Hejun Wong] 10:17:32
+In the lead.
+
+[Hejun Wong] 10:17:50
+Yes. If we were to insert five documents using insert many or even insert one it will always generate five or more entries.
+
+[Hejun Wong] 10:18:01
+Okay so but the difference between insert many and insert one is that you save on the network number of network calls.
+
+[Hejun Wong] 10:18:08
+And it's because of the number of network calls that you do achieve uh faster process time.
+
+[Hejun Wong] 10:18:18
+Okay, so that's a short kahoot. Congrats to Yogi. Gigi.
+
+[Hejun Wong] 10:18:30
+And somehow…
+
+[Hejun Wong] 10:18:35
+Okay.
+
+[Hejun Wong] 10:18:39
+Then let's go back to It's like that.
+
+[Hejun Wong] 10:18:46
+What advantages to have One of the advantages to having replication?
+
+[Hejun Wong] 10:19:07
+Hmm. Bcd.
+
+[Hejun Wong] 10:19:12
+Yes, is why I have in mind as well. Let's see.
+
+[Hejun Wong] 10:19:15
+Okay, that's correct. So horizontal scaling is not horizontal scaling is sharding creature go-to after lunch replication will not result in less network traffic.
+
+[Hejun Wong] 10:19:27
+In fact, it might be more because now you need to replicate your data to two other server nodes.
+
+[Hejun Wong] 10:19:34
+What is the odd milk?
+
+[Jrting Shiau] 10:19:41
+A.
+
+[Hejun Wong] 10:19:42
+A is correct.
+
+[Tony Lin] 10:19:53
+E.
+
+[tao song] 10:19:54
+The…
+
+[Hejun Wong] 10:19:54
+Yeah, that's right. P&e, they're correct. So it's a lot of all red operations It is a cat read-only collection.
+
+[Hejun Wong] 10:20:06
+Then the rest are not. True because you redo all the re-operations within the unlock we primarily use it to perform applications so we don't need the reoperations.
+
+[Hejun Wong] 10:20:20
+Okay, so to recap. Part one of my application.
+
+[Hejun Wong] 10:20:25
+Replication creates multiple analytical copies of your data And debris is used for HA.
+
+[Hejun Wong] 10:20:32
+Your rights to our primary node, they are replicated to your secondary nodes through the onward.
+
+[Hejun Wong] 10:20:36
+And the omblock is a cap collection. That is read by the secondaries to perform the same To apply the same operations onto themselves.
+
+[Hejun Wong] 10:20:45
+Okay, so with that, any questions?
+
+[Hejun Wong] 10:20:53
+All good, then let's take a 10 minutes break. An SBA at 10.30.
+
+[Hejun Wong] 10:21:24
+We're all around. The boom of summertime.
+
+[Hejun Wong] 10:30:39
+I'll even walk you in the stride in the rain.
+
+[Hejun Wong] 10:30:54
+Rip in your left arm around my right. Ready to walk me through.
+
+
+[Hejun Wong] 14:13:19
+So it has to be present within all your documents. And when you want to shut down based on that shard key, you will have to index that Shaqi first.
+
+[Hejun Wong] 14:13:32
+Okay, so when you think about indexing, then you will know, oh, I can create a single field index or compound index.
+
+[Hejun Wong] 14:13:39
+So likewise, when you choose the shark key It can be a single view or it can be made up of several fields.
+
+[Hejun Wong] 14:13:53
+Okay, so choosing shark keys in practice You should only shut your large collections So in large collections, users work with subsets of the data So user data for example you can start by a compound key.
+
+[Hejun Wong] 14:14:08
+So it can be like the user field together with other fields such as your bank account number transaction time, the games id session ID, platform ID, so and so forth.
+
+[Hejun Wong] 14:14:22
+Okay, so you don't have to use a single index, single field index, you can use a compile index and use that as your shock key.
+
+[Hejun Wong] 14:14:32
+Some other common examples would be to also shut based on your department information so it can be your department branch information or other common fields.
+
+[Hejun Wong] 14:14:42
+Okay, so when there are no clear subsets and your queries do not rely heavily on joints you can chart for parallelism Okay, so for example in this analytics data store you can actually add a random value to a shut key and that's that helped
+
+[Hejun Wong] 14:15:02
+To spread your data across the shutter cluster evenly.
+
+[Hejun Wong] 14:15:06
+Plus it's random now. You wouldn't know which data will this piece of data eventually reside in Weird Sharp.
+
+[Hejun Wong] 14:15:14
+So when it's random, then it will be split more evenly.
+
+[Hejun Wong] 14:15:24
+Okay, so on MongoDB before 4.4, version 4.4, you cannot change the shark key.
+
+[Hejun Wong] 14:15:31
+After 4.4, you can add another field to refine the short key.
+
+[Hejun Wong] 14:15:35
+And after version 5.0, you can change the shard key and reshot the collection.
+
+[Hejun Wong] 14:15:44
+But in general, you should always choose your short keys very carefully Because when he's sad to undo it and to change it will take up quite a bit of resources and time.
+
+[Hejun Wong] 14:16:01
+So this is the end of part one Are there any questions for me now?
+
+[Hejun Wong] 14:16:11
+Is sharding a lot more complex than the other topics?
+
+[Hejun Wong] 14:16:18
+Okay yeah okay okay then there's a good…
+
+[Jrting Shiau] 14:16:21
+Yeah, okay.
+
+[Hejun Wong] 14:16:25
+Okay, no questions. Okay, then there's also a part two. But before we go to part two, can we go to the instruct environment and start the sharding data coding exercise.
+
+[Jrting Shiau] 14:16:27
+No, no.
+
+[Hejun Wong] 14:16:48
+Okay, so that will take a while or so. Then let's take a 15 minutes break. So we'll be back at 230.
+
+[Hejun Wong] 14:16:58
+Then we will continue on the part two.
+
+[Hejun Wong] 14:32:12
+Let's resume and let's start on part two but before we start on part two let's go through the quiz from part one.
+
+[Hejun Wong] 14:32:29
+So we'll have a kahoot after part two there will much our learnings from both part one and part two. So let's do the quiz for part one first.
+
+[Hejun Wong] 14:32:38
+Which component is used to excess of the shutter cluster.
+
+[Tony Lin] 14:32:47
+A.
+
+[Hejun Wong] 14:32:49
+Yeah, it is correct. So we'll use the Mongo S to assess our sharded cluster.
+
+[Hejun Wong] 14:32:56
+Uh… Another point is that If you go and look at MongoDB 8.0 release notes.
+
+[Hejun Wong] 14:33:22
+Okay, so this is the point that I mentioned just now.
+
+[Hejun Wong] 14:33:26
+So starting in 8.0, you can move an uncharted collection to a different shot.
+
+[Hejun Wong] 14:33:33
+And the other one that I wanted to Hi-Fi.
+
+[Hejun Wong] 14:33:40
+To you guys and is related to the quiz question is actually This direct shot operations rule.
+
+[Hejun Wong] 14:33:50
+So starting in 8.0 you will not be able to connect to the data shots directly.
+
+[Hejun Wong] 14:33:58
+You will need to use This direct shut operations rule if you want to perform comments directly against a shot.
+
+[Hejun Wong] 14:34:08
+If not, you will need to use a you need to connect to your shard using mongos.
+
+[Hejun Wong] 14:34:16
+Okay. So this role is only meant for maintenance purposes.
+
+[Hejun Wong] 14:34:23
+Or it should be done under the guidance of support engineers.
+
+[Hejun Wong] 14:34:27
+But in general, you should only connect to your shots through MongoS.
+
+[Hejun Wong] 14:34:38
+Second quiz question what which of these are attributes of a well-chosen shark key.
+
+[Tony Lin] 14:35:12
+B.
+
+[Hejun Wong] 14:35:16
+B is not because you do want the shot to become a hot shot.
+
+[Tony Lin] 14:35:18
+Oh.
+
+[Hejun Wong] 14:35:23
+So you should ideally spread your will go across the different shots.
+
+[Hejun Wong] 14:35:29
+Yeah, so if you keep commonly accessed data on a single shot, then most of your read requests or go to a single shot and that's not ideal.
+
+[Hejun Wong] 14:35:37
+We want to spread the word. Across the different charts.
+
+[tao song] 14:35:44
+Oh, CD.
+
+[Hejun Wong] 14:35:46
+Yes, C, D. Is correct so and actually there's one more correct answer
+
+[Hejun Wong] 14:35:55
+Yeah, he's correct. Okay, so… C, minimize impact.
+
+[Hejun Wong] 14:36:01
+On users when a shot goes down So that's one. Second is to distribute your documents across your charts evenly.
+
+[Hejun Wong] 14:36:11
+And once that's done. You will hope to also have your read operations target a subset of your charts or just one shot.
+
+[Hejun Wong] 14:36:25
+Okay, and this one is wrong because we want a well-chosen Shark teeth should have high cardinality.
+
+[Hejun Wong] 14:36:33
+High number of unique values.
+
+[Hejun Wong] 14:36:38
+Okay, so this is the quiz on sharding part one Elgos provides a hard limit of 4 tb per shot.
+
+[Hejun Wong] 14:36:47
+So when you are designing your application is always good to plan ahead and plan for shutting.
+
+[Hejun Wong] 14:36:57
+So let's start on sharding part two.
+
+[Hejun Wong] 14:37:02
+So these are the typical steps when we want to shut our collection.
+
+[Hejun Wong] 14:37:08
+First, we will check whether our clusters or sharded cluster So you can check using sh so sh dot status.
+
+[Hejun Wong] 14:37:18
+For just now we learn about replica set. So replica set is rs dot status. So shard is sh Okay, so when we verify that it is a sharded cluster then we will next thing about Which… feel should we use to make up our shark key?
+
+[Hejun Wong] 14:37:38
+And once you have decided on a sharp key, we will create the index on the shark key.
+
+[Hejun Wong] 14:37:44
+And before… Mongo 6.0.
+
+[Hejun Wong] 14:37:50
+We actually need to run another command called sh enable sharding on our collection.
+
+[Hejun Wong] 14:37:58
+Before we can… run the next command. Step four, shark collection.
+
+[Hejun Wong] 14:38:03
+But after 6.0, that step is now optional. Okay, so we Once we decide on a sharp key we can create a shutt key and can go ahead and shut the collection.
+
+[Hejun Wong] 14:38:15
+So here we are specifying the namespace the database name collections comma and provide the shark key okay so here we want to shop the database on player ID ascending order and game time in ascending order.
+
+[Hejun Wong] 14:38:32
+Okay, so once we have shut our collection We can verify the status that the ranges are now moving using shdlock status again.
+
+[Hejun Wong] 14:38:43
+In a little later we'll be doing this exercise.
+
+[Hejun Wong] 14:38:50
+How config metadata caching works? So rather than always pouring the config server what the mongo S will do is actually stall a cache copy of the config data.
+
+[Hejun Wong] 14:39:05
+Okay, so with this cache copy of the config data When a request comes in.
+
+[Hejun Wong] 14:39:12
+It will actually… attach this cache copy of the config data together with the request and send it to the specific chart.
+
+[Hejun Wong] 14:39:22
+Or shots that's involved in the query. Okay, so if the mongo cache config information is an older version of the replica sets.
+
+[Hejun Wong] 14:39:33
+Then the replica set will ignore the operation and tell your MongoS hey, you need to refresh your cache.
+
+[Hejun Wong] 14:39:40
+And that's how Mongols will go refresh get a fresh set of config data from the config servers.
+
+[Hejun Wong] 14:39:48
+Then you will resend the operation to the correct shots.
+
+[Hejun Wong] 14:39:54
+So this is how config metadata caching works. And the whole idea is to ensure that MongoS will not need to keep asking the config servers each time they receive a request.
+
+[Hejun Wong] 14:40:11
+Next, let's talk about balancing of data. And this is a key component of the shardered cluster, right?
+
+[Hejun Wong] 14:40:19
+The key concept within the sharded cluster So previously, when we were designing the shark key there were some questions that we asked ourselves what if some stores were to do a lot better than the others.
+
+[Hejun Wong] 14:40:35
+Then that store will have a lot more information And can we still assign the key range store ID 1 to 33 to shard A.
+
+[Hejun Wong] 14:40:45
+What happens when there is data imbalance And when there's data imbalance, we will see our cluster throughput degree in terms of our read and write performance.
+
+[Hejun Wong] 14:40:56
+And we also require longer backup times. Windows data imbalance in a specific shot.
+
+[Hejun Wong] 14:41:04
+So how should we do it and how does MongoDB balance out your data?
+
+[Hejun Wong] 14:41:10
+That's what we'll learn in the subsequent slides. But in reality, our data will always have some form of imbalance.
+
+[Hejun Wong] 14:41:17
+So the balancer is there to help to balance out our data.
+
+[Hejun Wong] 14:41:26
+Okay, so… MongoDB migrates data ranges in a sharded cluster to distribute the data evenly across the shots.
+
+[Hejun Wong] 14:41:35
+There are two ways. It can be a manual way. It can be an automatic He saw the balancer will balance out the data across the cluster It runs on the primary node of the config server replica set Okay, so the whole idea is that
+
+[Hejun Wong] 14:41:55
+It will only start balancing out your data If it detects that the amount of data between the largest and smallest shot.
+
+[Hejun Wong] 14:42:05
+Exceeds a certain threshold. So this certain threshold is something that you can configure.
+
+[Hejun Wong] 14:42:13
+And once the data between the largest and smallest shot exceeds.
+
+[Hejun Wong] 14:42:18
+Then the balancer will kick in. And start to balance out the data.
+
+[Hejun Wong] 14:42:26
+Okay, so key range is the unit of balancing in mongodb When we define the portion of data for migrating between shots.
+
+[Hejun Wong] 14:42:34
+We define it in key rings. So the default size is 128 megabytes.
+
+[Hejun Wong] 14:42:42
+Okay, so the balancer will only move your key range that are equal or smaller than this 128 megabyte size.
+
+[Hejun Wong] 14:42:53
+Okay, so this number is something that you can configure for example here store ID one to four is a key range.
+
+[Hejun Wong] 14:43:03
+Okay, so when you define a q range The smaller number, there's the lower bound.
+
+[Hejun Wong] 14:43:09
+Is included. And the upper number, the upper bound four, it is excluded.
+
+[Hejun Wong] 14:43:15
+Which means that in this key range one to four it includes one, two, three.
+
+[Hejun Wong] 14:43:22
+K4 is excluded. Okay, so this is an important point. When you define a key range The lower bound is included.
+
+[Hejun Wong] 14:43:30
+That up or down is excluded. Okay, so four is excluded.
+
+[Hejun Wong] 14:43:39
+Okay, so when your key range becomes larger than this 128 megabytes size Then the balancer will not move your key range anymore.
+
+[Hejun Wong] 14:43:53
+It becomes like a jumble key range and once it's a jumbo key range your balancer will not move that data because it's too big to move.
+
+[Hejun Wong] 14:44:08
+Okay, so then in the subsequent number of sites we will see step by step How does automatic balancing work in MongoDB sharded cluster.
+
+[Hejun Wong] 14:44:20
+Okay, so we will start off with Three shot.
+
+[Hejun Wong] 14:44:25
+Mp sharded cluster. Okay, so here your application driver mongoose On the right, we have our config server the balancer will run on the primary node of the config server And here we have three data shots.
+
+[Hejun Wong] 14:44:39
+And currently, they are all empty. Okay, so here will be our key range information which is stored in the config server.
+
+[Hejun Wong] 14:44:49
+Okay, so here key range key from minky to maximum key they're all in short one. That means now if new data comes in By default, you'll go to shard one.
+
+[Hejun Wong] 14:45:02
+Oops. Okay, so with a newly shuttered cluster, it will just contain one key range that is your min and max key.
+
+[Hejun Wong] 14:45:12
+So yeah, me and maxi will hold all the data And this key range will only exist on a single shot Because… there cannot be duplicate or overlaps.
+
+[Hejun Wong] 14:45:26
+Therefore, when you have new RAD operations that come in to your shutter cluster, it will by default go to shard one.
+
+[Hejun Wong] 14:45:33
+Cost the minimum and the maximum key It's only shot one. Okay, so we write all the data by default you'll go to sharp one.
+
+[Hejun Wong] 14:45:42
+As your data grows. And when the differences in data between the smallest shot and the largest shot becomes three times the maximum size of the default key range. So the 128 megabytes that's when the bank answer will kick in.
+
+[Hejun Wong] 14:46:02
+Why three times the difference because This is a tree shark cluster.
+
+[Hejun Wong] 14:46:08
+Okay, so when the difference between data of shard one and shard two becomes 284 megabytes.
+
+[Hejun Wong] 14:46:15
+Your balance will kick in. It will start to move you'll start to balance out your data.
+
+[Hejun Wong] 14:46:22
+Okay, so you will first find a split point within your key range in such a way that the size of the key range to be moved so range one, there's the one that is going to be moved.
+
+[Hejun Wong] 14:46:36
+Is smaller than or equals to 128 megabytes. Okay, so it will not move too much data at one time it will only move 128 megabytes or smaller each time.
+
+[Hejun Wong] 14:46:52
+Okay so here it will split the data into two ranges Range 108 megabytes, range 256 megabytes. So if you see on the right Now our main key 270 is in shot one.
+
+[Hejun Wong] 14:47:07
+70 to maximum key is still in short one. So you will first split the data after which it will start copying the data of range 1 over to shard 2.
+
+[Hejun Wong] 14:47:21
+Okay, so you'll start copying So far, the data is being migrated to shard 2 migrated when there are queries all right operations coming in.
+
+[Hejun Wong] 14:47:34
+It will still be sent to SHARAD1. You will not send to shard 2 yet. It will just continue sending all the operations to SHA-1.
+
+[Hejun Wong] 14:47:45
+And any changes made to the key range during the copying will be done on the sauce.
+
+[Hejun Wong] 14:47:50
+Once it's completed, then the changes are applied. To shut through as well.
+
+[Hejun Wong] 14:47:58
+Okay, so here the chance collection is still Minky 7D.
+
+[Hejun Wong] 14:48:04
+Shot 170 to max key shot one still shot one. Okay now here copying is complete
+
+[Hejun Wong] 14:48:15
+Then you'll see that the chunks collection table now has updated.
+
+[Hejun Wong] 14:48:19
+Minky 270, sharp one. 70 to max key shot 2.
+
+[Hejun Wong] 14:48:26
+Okay so here we will update our metadata our new queries and write operations will come to shard two as well.
+
+[Hejun Wong] 14:48:34
+And this all range one will be marked for deletion.
+
+[Hejun Wong] 14:48:39
+Okay so queries assessing the key range in between 70 to max he will just go to shut two and the old Green Shuan will no longer be in use. It will be marked for deletion.
+
+[Hejun Wong] 14:48:55
+Okay, so once it's deleted. The data will look something like that min key to 70 Inshot one 70 to max key shot two.
+
+[Hejun Wong] 14:49:08
+Okay. Before moving on to the exercise, any questions?
+
+[Hejun Wong] 14:49:15
+The whole idea of balancing is to take a bit of data and migrate to the next chart.
+
+[Hejun Wong] 14:49:21
+And because it's taking just a bit of data And not a lot of data at one time, it should not impact your shardered cluster's performance.
+
+[Hejun Wong] 14:49:31
+But if you think about it. Now I'm only migrating 128 megabytes of data Each time.
+
+[Hejun Wong] 14:49:40
+So if you have a large amount of data to be migrated.
+
+[Hejun Wong] 14:49:43
+This balancing act. Can actually take a long time. Sometimes it can take days weeks and even months so it really depends on how much data you have. Yeah.
+
+[Hejun Wong] 14:49:53
+So that's why the heart limit of each channel is two terabyte.
+
+[Hejun Wong] 14:50:00
+And the reason why we set this hard limit of 2TB is to make sure that your balancing act.
+
+[Hejun Wong] 14:50:07
+Don't take too much time. Okay, so remember Uh… Okay, I wouldn't say it's a hard limit or two terabyte. It's actually possible to go above two terabyte but we would not recommend your single shot data to be above two terabytes.
+
+[Hejun Wong] 14:50:28
+And the whole purpose and reason is because when you have balancing enabled you wouldn't want too much data in one shot so that it doesn't take too much of a time.
+
+[Hejun Wong] 14:50:40
+To your data. Any questions for now?
+
+[Hejun Wong] 14:50:47
+Okay, all good. Then, oh, sorry, Tony. I see that you have unmuted. Go ahead.
+
+[Tony Lin] 14:50:52
+Oh, so which means the the space in SHA-1 will be released after the the balancing completed, right?
+
+[Hejun Wong] 14:51:05
+Queso replacing of space or in the sense like data fragmentation is a bit different in MongoDB.
+
+[Hejun Wong] 14:51:15
+So what do I mean by that? When you delete data let's say here previously there is like 384 megabytes of data here.
+
+[Hejun Wong] 14:51:27
+When you go for like the storage space it should show you 284 megabytes After you delete the data.
+
+[Hejun Wong] 14:51:36
+When you query the data of shard one, it might still show you 200 plus megabytes. It might not show you 256 megabytes.
+
+[Hejun Wong] 14:51:45
+Why? Because… MongoDB actually will mark this portion as reusable.
+
+[Hejun Wong] 14:51:56
+You will not immediately release this 128 megabytes. Back to the operating system.
+
+[Hejun Wong] 14:52:02
+So when new data comes in it actually reuses this 188 megabyte space.
+
+[Hejun Wong] 14:52:12
+Okay, so it will not be released to the operating system immediately and it allows your new write operations or amendments to use this space.
+
+[Hejun Wong] 14:52:22
+So how do we release if you want to release this space how do you release it back to the operating system you can run compact
+
+[Hejun Wong] 14:52:34
+Okay, so when you run compact it will release.
+
+[Hejun Wong] 14:52:40
+I needed this space back to the operating system.
+
+[Tony Lin] 14:52:45
+Hmm.
+
+[Hejun Wong] 14:52:45
+Okay, so this is one way And in MongoDB 8.0, we actually have autocompact.
+
+[Hejun Wong] 14:52:54
+So the latest version there's auto compact where So the key thing to note is Compact can take a long time.
+
+[Tony Lin] 14:53:04
+Hmm.
+
+[Hejun Wong] 14:53:04
+And with Auto Compact, what it does is actually it enables this background compact for you Okay, so periodically it will periodically through your files and continuously run Compaq to see if there are free storage space to to free up.
+
+[Tony Lin] 14:53:22
+By default, the autocompet is disabled, right?
+
+[Hejun Wong] 14:53:28
+Yes. Yeah, and it is new.
+
+[Tony Lin] 14:53:30
+Okay.
+
+[Hejun Wong] 14:53:33
+And I think it's not available in AWS yet. Is only available on… your self-hosted solutions.
+
+[Tony Lin] 14:53:37
+Hmm.
+
+[Tony Lin] 14:53:42
+Yes. And you mean Okay. You mean the MongoDB can reuse the space So which… Which… indicator i can i can check to see free space the data size or the the precise.
+
+[Hejun Wong] 14:53:43
+But this should be coming soon.
+
+[Hejun Wong] 14:54:01
+Hmm.
+
+[Hejun Wong] 14:54:06
+Okay, good question. So if I go back to the compact operation So if you go look at this compact operation there's this dry run option Okay, so…
+
+[Tony Lin] 14:54:17
+Oh, I don't mean the compact You said space mainly.
+
+[Tony Lin] 14:54:24
+Not be released because MongoDB can reuse the drive And how do I check how many spat it can reuse?
+
+[Hejun Wong] 14:54:30
+Yeah.
+
+[Hejun Wong] 14:54:35
+Yeah okay so actually is this dry run option So if you run dry run it will return you an estimate of how much space it can reclaim.
+
+[Tony Lin] 14:54:37
+Oh. Oh.
+
+[Tony Lin] 14:54:48
+Hmm.
+
+[Hejun Wong] 14:54:48
+Okay so it returns you with how much space it can reclaim without actually performing that compact operation.
+
+[Tony Lin] 14:54:56
+Oh.
+
+[Hejun Wong] 14:54:57
+So… If you do not see that if you see that or the size is just very little then there's no there's not much value in running compact.
+
+[Hejun Wong] 14:55:10
+Yeah, so you can run the dry run option first. But this is in version 8.0.
+
+[Hejun Wong] 14:55:22
+Yeah.
+
+[Tony Lin] 14:55:24
+Okay.
+
+[Hejun Wong] 14:55:26
+Thanks for that question. Okay, maybe to just share a little more.
+
+[Hejun Wong] 14:55:32
+Uh… when you drop indexes.
+
+[Hejun Wong] 14:55:38
+That space is released back to the operating system immediately. You don't need to run Compaq.
+
+[Hejun Wong] 14:55:47
+Yeah. So when your job indexes, it releases immediately.
+
+[Hejun Wong] 14:55:57
+Yeah, that's a key thing that I wanted to share.
+
+[Tony Lin] 14:56:02
+The delete data will not release right.
+
+[Hejun Wong] 14:56:04
+Yeah, they read data, you were just a mark that blocks as reusable
+
+[Tony Lin] 14:56:11
+Okay.
+
+[Hejun Wong] 14:56:14
+Okay, then let's proceed. Okay, so in the exercise on Instruct, what you'll be working with is actually a two-shot shadow cluster.
+
+[Hejun Wong] 14:56:27
+So there's a Mongo S, that's a router. There'll be a config server And what we'll be doing is actually doing import a large data set.
+
+[Hejun Wong] 14:56:38
+Shot a collection. And we will run queries to see which shots are being accessed to retrieve the results.
+
+[Hejun Wong] 14:56:50
+Okay, so let's start up this sharded data loading exercise within instruct.
+
+[Hejun Wong] 14:56:57
+Okay, so I think we have done it before the break.
+
+[Hejun Wong] 14:57:01
+Okay, so… First step will be to load the sample data set.
+
+[Hejun Wong] 14:57:09
+Let me piece.
+
+[Hejun Wong] 14:57:13
+Okay, so I've pasted the code command within the meeting chat.
+
+[Hejun Wong] 14:57:17
+You can run it. It will take a while.
+
+[Hejun Wong] 14:57:33
+You'll take a few minutes. Because there's like 3.5 million documents
+
+[Jrting Shiau] 14:58:23
+And paste the exercise link again.
+
+[Hejun Wong] 14:58:26
+Oh, yes, sure.
+
+[Hejun Wong] 14:58:37
+There will be three challenges then you need to start the sharding data loading exercise.
+
+[Hejun Wong] 14:59:00
+So it took about four minutes for me to download the data just now.
+
+[Hejun Wong] 14:59:14
+Okay, so as while we are waiting for the data to be downloaded, let's take a five minutes break.
+
+[Hejun Wong] 14:59:21
+So if you all need to grab some water I'll go to the washroom, can go ahead.
+
+[tao song] 15:00:46
+Only 200 megabytes.
+
+[Hejun Wong] 15:06:56
+Okay, everyone back.
+
+[Hejun Wong] 15:07:11
+If your data has been downloaded. Can proceed to run the next command there is to unzip.
+
+[Hejun Wong] 15:07:18
+The zip file. Okay, so you can unzip then type.
+
+[Hejun Wong] 15:07:24
+Find and use tab to autocomplete. The command.
+
+[Hejun Wong] 15:07:30
+And the unzip will take some time as well.
+
+[Hejun Wong] 15:07:58
+Just wanted to show you So within my terminal 2.
+
+[Hejun Wong] 15:08:03
+I have ran the PS command. And I went to… filter out all the processes that has mongo within it. So here I can verify that Okay, I have one process that's running the config server.
+
+[Hejun Wong] 15:08:20
+Another process that is running the first data chart the third process that's running the second data shot.
+
+[Hejun Wong] 15:08:28
+And one more process that's running the MongoS process. All together.
+
+[Hejun Wong] 15:08:34
+Add the config server two data shots and one MongoS process.
+
+[Hejun Wong] 15:08:39
+Okay, so the configuration would be Mongo S will be on port.
+
+[Hejun Wong] 15:08:46
+Two seven zero zero. Config server.
+
+[Hejun Wong] 15:08:51
+2701 shot a will be two seven zero zero two and sharp b27003.
+
+[Hejun Wong] 15:09:05
+So if you'll go back to It's like that.
+
+[Hejun Wong] 15:09:10
+Once you have unzipped the zip file, then go ahead and run this command mongo import Mongol import will take a few minutes to finish as well.
+
+[Hejun Wong] 15:09:22
+So Mongol import. Specify the connection stream.
+
+[Hejun Wong] 15:09:27
+In this case. Localhost 2 7 0 0 which is our mongoose. So Mongo S.
+
+[Hejun Wong] 15:09:37
+So we'll assess Mongols. We'll drop this find food corrections first then after that we will ingest it we interest the fine foods.
+
+[Hejun Wong] 15:09:48
+Dot JSON file into the collection.
+
+[Hejun Wong] 15:11:41
+So Mongol import will take a few minutes but once you are done Give me a thumbs up.
+
+[Hejun Wong] 15:11:48
+So now I know that we are good to proceed.
+
+[Hejun Wong] 15:11:54
+Oh, 20, that's fast. Oh, that's really fast.
+
+[tao song] 15:14:05
+You can go visit our office in Taipei if you go
+
+[Hejun Wong] 15:14:10
+I'm trying to see if I recognize this place.
+
+[tao song] 15:14:27
+Yeah, but I think most of them in Tai Rong right We also have Taijuan office.
+
+[Hejun Wong] 15:14:31
+Oh, you are in Taizong.
+
+[Hejun Wong] 15:14:35
+Oh.
+
+[Tony Lin] 15:14:37
+Me and Gigi are in Taichon.
+
+[Hejun Wong] 15:14:42
+Oh.
+
+[tao song] 15:14:42
+13 also studying in heaven now.
+
+[Tony Lin] 15:14:44
+Due to anywhere. No, JRT is anywhere.
+
+[Hejun Wong] 15:14:54
+On top of that.
+
+[Jrting Shiau] 15:15:02
+I think next time. Yeah, gaomei is in Hajong, yeah.
+
+[Hejun Wong] 15:15:03
+Kang Mei is in Taizong, right?
+
+[Tony Lin] 15:15:11
+Why?
+
+[Hejun Wong] 15:15:13
+Yeah, that many years ago Taiwan.
+
+[Hejun Wong] 15:15:20
+So you cheat on, so… And she called me.
+
+[Tony Lin] 15:15:21
+Oh.
+
+[Tony Lin] 15:15:25
+To see a sunset.
+
+[Hejun Wong] 15:15:27
+Yeah, yeah, yeah. So yeah, I found Gambling. Very nice.
+
+[Tony Lin] 15:15:35
+But it's far from… Daigeon office. Daecho office is beside Taejong City Hall.
+
+[Hejun Wong] 15:15:40
+Oh.
+
+[Hejun Wong] 15:15:45
+Hajong City Hall.
+
+[Hejun Wong] 15:15:54
+So like…
+
+[Tony Lin] 15:15:56
+City government
+
+[Hejun Wong] 15:16:03
+Oh, well, yeah.
+
+[Hejun Wong] 15:16:22
+I'm trying to see whether there are any you should recognize.
+
+[Tony Lin] 15:16:28
+Oh, yes, it's… is on the… left at the upper, there's a feng ja yes
+
+[Hejun Wong] 15:16:36
+Oh, okay. Oh, Fengjia Park is here. Okay, okay.
+
+[Tony Lin] 15:16:41
+Yeah. Hmm.
+
+[Hejun Wong] 15:16:53
+The other thing I stayed near here.
+
+[tao song] 15:17:00
+I still remember.
+
+[Hejun Wong] 15:17:03
+No, quite recent. After I got married.
+
+[Tony Lin] 15:17:04
+Whoa.
+
+[tao song] 15:17:09
+Aww.
+
+[Hejun Wong] 15:17:10
+So I… I came with my wife.
+
+[Tony Lin] 15:17:10
+Oh, so…
+
+[Hejun Wong] 15:17:16
+Yeah, we really like Taiwan.
+
+[Tony Lin] 15:17:20
+Mm-hmm.
+
+[tao song] 15:17:23
+The next time go from Tony.
+
+[Hejun Wong] 15:17:25
+Yeah.
+
+[Tony Lin] 15:17:27
+Sure, sure. Thank you. Bring you to Hongjian landmark market
+
+[Hejun Wong] 15:17:33
+Yeah.
+
+[Tony Lin] 15:17:43
+Oh. Hmm.
+
+[Hejun Wong] 15:17:49
+And remember, in front of the hotel there was a
+
+[Hejun Wong] 15:17:55
+Like historical Allhauser.
+
+[Tony Lin] 15:18:02
+Hysterical house.
+
+[Hejun Wong] 15:18:04
+But cannot find out.
+
+[Tony Lin] 15:18:10
+Is that Fengjia University?
+
+[Hejun Wong] 15:18:14
+Hongshan University, UPNR.
+
+[Tony Lin] 15:18:17
+Yeah, yeah, yeah, yeah.
+
+[Tony Lin] 15:18:22
+The net market is uh in front of the university.
+
+[Hejun Wong] 15:18:27
+Oh, yeah.
+
+[Hejun Wong] 15:18:34
+Yeah, only remember the last time I stayed near here?
+
+[Tony Lin] 15:18:39
+Hmm.
+
+[Hejun Wong] 15:18:47
+Qingjing, yes. Nia.
+
+[Tony Lin] 15:18:53
+May text. Two hours is in the rental
+
+[Hejun Wong] 15:18:58
+Yeah. Yeah, so last time my wife and i went to Then we drove to Qingqing.
+
+[Tony Lin] 15:19:08
+Oh. To Chenjin.
+
+[Hejun Wong] 15:19:10
+Hmm.
+
+[Tony Lin] 15:19:13
+Did you go Sun Moon Lake?
+
+[Hejun Wong] 15:19:16
+Oh, many, many years ago Yeah.
+
+[Hejun Wong] 15:19:22
+And rule of fun, I remember I stopped at some some shop near Samunway at a raw fund and I've thought it was very nice.
+
+[Tony Lin] 15:19:32
+Oh.
+
+[Hejun Wong] 15:19:33
+Yeah, so Taiwan, I've been to Taichong haoyan. And typing. I haven't been to Kao Xiang.
+
+[Tony Lin] 15:19:42
+Oh, very pleased.
+
+[Hejun Wong] 15:19:42
+Organizer. Oh, wow.
+
+[tao song] 15:19:45
+We have caution office also. Yeah, Kyo Kyo is there.
+
+[Tony Lin] 15:19:51
+Kill, kill, kill. Yeah.
+
+[Hejun Wong] 15:19:52
+Oqo is there. Okay, okay.
+
+[Hejun Wong] 15:19:58
+Well, you are located everywhere within Taiwan.
+
+[tao song] 15:20:05
+We've got Taiwan company broke.
+
+[Hejun Wong] 15:20:14
+I just came back from career.
+
+[Hejun Wong] 15:20:19
+Well, cheer you. So…
+
+[Tony Lin] 15:20:23
+Oh.
+
+[tao song] 15:20:23
+We also just came back from Korea.
+
+[Hejun Wong] 15:20:25
+Oh, Raghi. As a company offsite? Oh, wow.
+
+[tao song] 15:20:28
+Because we yeah we have a company outing
+
+[Hejun Wong] 15:20:34
+So fun. Oh, was it very cool?
+
+[tao song] 15:20:34
+Just last month.
+
+[tao song] 15:20:40
+Okay, not very cool. Maybe because from the north part of China, so I used to it.
+
+[Hejun Wong] 15:20:43
+Okay. Yeah, there is nothing for you.
+
+[Hejun Wong] 15:20:50
+So I went to sew then i drove to Yong Pyonga.
+
+[Hejun Wong] 15:20:58
+Causing the bean. I went to learn how to ski.
+
+[Tony Lin] 15:21:01
+Oh.
+
+[Hejun Wong] 15:21:03
+My first time learning how to ski Yeah. Yeah, I really like it.
+
+[tao song] 15:21:07
+Do you like it?
+
+[Hejun Wong] 15:21:10
+And the vigage was very nice.
+
+[Hejun Wong] 15:21:16
+I mean, Alpensia.
+
+[Hejun Wong] 15:21:21
+Skiing result.
+
+[Tony Lin] 15:21:24
+They see your time outing go to Jeju Do.
+
+[Hejun Wong] 15:21:28
+Oh, wow. Really?
+
+[Tony Lin] 15:21:31
+Yes.
+
+[Hejun Wong] 15:21:33
+I also like Jeju.
+
+[Hejun Wong] 15:21:37
+Yeah, so I recently went to this ski visa wishes towards the right hand side.
+
+[Hejun Wong] 15:21:44
+So it's about a three hours drive to back to so two to three hours.
+
+[tao song] 15:21:53
+Oh, you always rent a car and drive. When travel.
+
+[Hejun Wong] 15:21:53
+Okay, let's see. Yeah, yeah, yeah. But…
+
+[Tony Lin] 15:21:58
+Chelsea, you really like driving.
+
+[Hejun Wong] 15:22:02
+Yeah. Of course in singapore you're… is a small country.
+
+[Hejun Wong] 15:22:08
+Your drive view doesn't take too long so we usually like to have like long drives.
+
+[Tony Lin] 15:22:13
+Oh. So Tao just buy a new car.
+
+[Hejun Wong] 15:22:15
+Hmm. Oh, wow, Reggie.
+
+[tao song] 15:22:20
+Yeah, yeah. A few days ago. Yeah.
+
+[Hejun Wong] 15:22:21
+In Singapore. Wow, congrats.
+
+[tao song] 15:22:26
+Thanks.
+
+[Hejun Wong] 15:22:31
+It must be expensive.
+
+[tao song] 15:22:35
+Yeah. And COE is crazy, bro.
+
+[Hejun Wong] 15:22:38
+How much was the COE?
+
+[tao song] 15:22:43
+92k, 1993 yeah
+
+[Hejun Wong] 15:22:47
+Wow. Yeah. In Singapore to start even using the card you need to buy the the certificate.
+
+[Hejun Wong] 15:22:56
+And now it is 92k. Single dollars.
+
+[Tony Lin] 15:22:56
+Hmm.
+
+[Hejun Wong] 15:23:00
+Sgd tour. One dollar.
+
+[Hejun Wong] 15:23:05
+So 92k.
+
+[Hejun Wong] 15:23:13
+And by the one.
+
+[Tony Lin] 15:23:13
+You can buy the other car.
+
+[Tony Lin] 15:23:20
+Such like Mercedes or… BMW.
+
+[Hejun Wong] 15:23:24
+Oh. In…
+
+[tao song] 15:23:27
+Yeah, if I have one card here, I can buy five same car in China.
+
+[Hejun Wong] 15:23:34
+Yeah. And this is excluding the car This is just a paper.
+
+[Tony Lin] 15:23:40
+Hmm.
+
+[tao song] 15:23:40
+This is just the search only.
+
+[Hejun Wong] 15:23:42
+Yeah, they just assert.
+
+[Tony Lin] 15:23:45
+And only for 10 years.
+
+[Hejun Wong] 15:23:47
+Yeah, only for 10 years. How much is it how much does a car cost in Taiwan?
+
+[Tony Lin] 15:23:50
+Strong.
+
+[Hejun Wong] 15:23:55
+Let's say a tesla
+
+[Tony Lin] 15:23:57
+Tesla the new Model Y is about 200… 2 million two million anti-daughter.
+
+[Tony Lin] 15:24:09
+So send us your license.
+
+[Hejun Wong] 15:24:15
+That's okay.
+
+[tao song] 15:24:16
+Let's keep the topic for me. I don't want…
+
+[Hejun Wong] 15:24:22
+Maekai is a high already. I'll need to renew it.
+
+[tao song] 15:24:23
+Various. Yeah, your way experience it again.
+
+[Hejun Wong] 15:24:27
+In the coming years. Yeah. I was hoping that with the elections, the COE will drop No.
+
+[tao song] 15:24:37
+I don't think so.
+
+[Hejun Wong] 15:24:40
+I didn't see you drop much as well. Okay, so once you all have finished importing Mongo shell into mongos, so localhost 2.7.
+
+[Hejun Wong] 15:24:51
+27,000.
+
+[Hejun Wong] 15:25:03
+Okay, so once you are in you should see direct you are directly connecting to mongols Then let's move on.
+
+[Hejun Wong] 15:25:12
+Okay, let's verify our shuttered cluster by running sh.status right now.
+
+[Hejun Wong] 15:25:35
+After running sh.status if you scroll down under the you should see a collections object which is empty right now.
+
+[Hejun Wong] 15:25:47
+And I remember it's under… database are databases, there'll be a collections object and is an empty object.
+
+[Hejun Wong] 15:25:59
+Okay, so now we have verified that Okay, we have a shuttered cluster But we do not have any shattered collections right now.
+
+[Hejun Wong] 15:26:10
+If we… look at the document schema.
+
+[Hejun Wong] 15:26:13
+We need to create So which fields to create as a shark key This one will just give you the answer your use, product ID, authentic order, user ID, ascending order.
+
+[Hejun Wong] 15:26:30
+Okay, so go ahead and create this index.
+
+[Hejun Wong] 15:26:37
+Db fine foods create index. Product ID1, user ID1. It will take a while.
+
+[Hejun Wong] 15:27:14
+After creating the index, give me a thumbs up.
+
+[XueYee Chen] 15:29:05
+My MongoDB scene Nah, say alcohol.
+
+[Hejun Wong] 15:29:13
+Oh, can you share screen? Let me take a look.
+
+[XueYee Chen] 15:29:16
+Okay.
+
+[XueYee Chen] 15:29:33
+Hmm.
+
+[Hejun Wong] 15:29:34
+Oh, you are in the wrong exercise. Design is for the replication.
+
+[Hejun Wong] 15:29:39
+There should be another exercise that is the sharding one
+
+[Hejun Wong] 15:29:46
+Rukoni. You know…
+
+[XueYee Chen] 15:29:52
+You'll sing it out.
+
+[Hejun Wong] 15:30:02
+Instruct the naka URL.
+
+[Hejun Wong] 15:30:16
+Okay, then dissanga nga shading.
+
+[XueYee Chen] 15:30:22
+Oh, he can go. Oh. Okay.
+
+[Hejun Wong] 15:30:24
+They.
+
+[XueYee Chen] 15:30:30
+Okay.
+
+[Hejun Wong] 15:30:33
+Mongo import.
+
+[Hejun Wong] 15:30:41
+Okay, because…
+
+[XueYee Chen] 15:30:43
+Mission.
+
+[Hejun Wong] 15:30:46
+Oh.
+
+[Hejun Wong] 15:30:52
+Came on Pingu so on my screen.
+
+[Hejun Wong] 15:30:59
+My exercise restarted. So when I run sh.status under databases.
+
+[Hejun Wong] 15:31:06
+You should see that collections is an empty object Right now. Okay, so later when we… shut our collection.
+
+[Hejun Wong] 15:31:15
+Then we will see that information within this collections object.
+
+[Hejun Wong] 15:31:27
+Okay, for the rest have y'all created the index.
+
+[Hejun Wong] 15:31:32
+Yes, okay, then let's proceed to shut the correction. So we will shark the test dbb fine foods collection.
+
+[Hejun Wong] 15:31:53
+Okay, then you provide the Sharkey that is product ID1, user ID1.
+
+[Hejun Wong] 15:32:00
+This operation should be quite fast.
+
+[Hejun Wong] 15:32:05
+I will paste the command into the chat.
+
+[Hejun Wong] 15:32:48
+Okay, after you have started the collection, run sh.status immediately you should see this chunk's information
+
+[Hejun Wong] 15:33:03
+Okay, then wait a few seconds. Okay, can we have a few more minutes?
+
+[Hejun Wong] 15:33:08
+Then you can rerun sh.status again And you will notice that you will notice that there'll be more ranges created And we didn't arrange, they'll also tell you from this range to this range, where's your data residing on either shard A or shard B?
+
+[Hejun Wong] 15:33:32
+Yeah, so you can keep running the sh.status to monitor how the load balancer is actually how the balancer is actually distributing the data across the different shots.
+
+[Hejun Wong] 15:33:43
+So initially, you will see that all the data is on shard a Then after that you will start to move your data across shard a and sharp B.
+
+[Hejun Wong] 15:34:15
+So you can monitor that. And also one thing to note is that we didn't have to run this sh.enable sharding.
+
+[Hejun Wong] 15:34:24
+On the test db just now because If you were to log into mongo shell
+
+[Hejun Wong] 15:34:34
+So when you first log in, it will tell you what's the database version And you'll notice that it's using 7.0.5.
+
+[Hejun Wong] 15:34:42
+And for 7.0.5, you do not need to run the enable sharding.
+
+[Hejun Wong] 15:34:49
+Come on okay so this is optional. We can go straight to create the index and also to shut the collection.
+
+[Hejun Wong] 15:34:59
+So above version 6.0, you will not need to actually run the enable sharding command.
+
+[Hejun Wong] 15:35:16
+Okay, once you are ready. The final step of this exercise will be to run your queries Okay, so you can run this query where you're finding a product id of this value and user ID of this value within the fine foods collection
+
+[Hejun Wong] 15:35:37
+And we are performing a explain with execution stats verbosity mode.
+
+[Hejun Wong] 15:35:44
+Okay, so you'll notice that, oh, we are using index scan then we also have fetching And it is done within a single shot.
+
+[Hejun Wong] 15:35:57
+Let me paste the command within the chat so that's easier.
+
+[Hejun Wong] 15:36:18
+Okay, so… The key thing is because the query is using your shard key.
+
+[Hejun Wong] 15:36:25
+Of course, we created an index just now on product ID 1, user ID1, And now the query matches the shark key product ID, it goes to a certain value user goes to a certain value.
+
+[Hejun Wong] 15:36:36
+You can use the shark key. And you can use that index. That's why it's an index scan.
+
+[Hejun Wong] 15:36:42
+And that's how it's fast. It as compared to the second query, which is not as efficient where we are finding helpfulness equals to 2 of 2.
+
+[Hejun Wong] 15:36:57
+If you were to run the query with the explained execution stats method you will notice that it's actually performing a correction scan And you have to do so on the two shots so you have to is a scatter and gather quarry.
+
+[Hejun Wong] 15:37:18
+Okay, so I've pasted the command into the chat you can copy and paste and run it within your terminal.
+
+[Hejun Wong] 15:37:49
+Okay, so one thing to remember is Here we have a correction scan.
+
+[Hejun Wong] 15:37:56
+And whenever you see a collection scan you can review the query If the query is often fired by your application.
+
+[Hejun Wong] 15:38:04
+You should create an index. So in this case, if helpfulness is always fired, you can create an index on the helpfulness view.
+
+[Hejun Wong] 15:38:15
+So even in the sharded cluster your concept of indexes still apply?
+
+[Hejun Wong] 15:38:22
+So your ESR guidelines to apply.
+
+[Hejun Wong] 15:38:35
+So now that you have knowledge of Shadding.
+
+[Hejun Wong] 15:38:40
+And most of you are in the dev team Whenever you think about planning for a shuttered cluster.
+
+[Hejun Wong] 15:38:48
+The key thing will be designing a good shark key Okay, so your shard key will determine where your data is stored based on your sharp key you should try to design a shark key that caters to most of your
+
+[Hejun Wong] 15:39:04
+Application queries. So make sure that you're targeting one or a few shots.
+
+[Hejun Wong] 15:39:11
+And not a scatter and gather query. And that will see that that will ensure that your performance of your operations a bit fast.
+
+[Hejun Wong] 15:39:41
+Okay, so if you are interested to find out more about
+
+[Hejun Wong] 15:39:49
+How the cluster was set up. You can actually look at.
+
+[Hejun Wong] 15:39:53
+The different config files
+
+[Hejun Wong] 15:39:58
+So just now I ran the PS1.
+
+[Hejun Wong] 15:40:08
+So these are the config files.
+
+[Hejun Wong] 15:40:14
+You can actually take a look at the various config files.
+
+[Hejun Wong] 15:40:23
+Okay, so this is a config server Config server has a replica set This is the process information.
+
+[Hejun Wong] 15:40:34
+Is running on port 2001. Where's the log file location? Where is the data path location?
+
+[Hejun Wong] 15:40:45
+Same goes to the other configurations.
+
+[Hejun Wong] 15:41:11
+So this, you know. Shot once configuration.
+
+[Hejun Wong] 15:41:17
+You know db puff your white Toyota size.
+
+[Hejun Wong] 15:41:22
+Your log location Pot number.
+
+[Hejun Wong] 15:41:30
+So you will notice that here there's a sharding cluster row and this rule is a short server rule.
+
+[Hejun Wong] 15:42:03
+And finally, this is the Mongols configuration
+
+[Hejun Wong] 15:42:09
+Okay, so for mongo S, you need to let them know where is your config database located at
+
+[Hejun Wong] 15:42:23
+There's no data for your MongoS server, so you do not need to specify those information like your DB path.
+
+[Hejun Wong] 15:42:30
+You just need a system lock.
+
+[Hejun Wong] 15:42:41
+Okay, so let's proceed. So you'll notice that A common pitfall with shodding.
+
+[Hejun Wong] 15:42:52
+Is that it can take a while depending on how it's done, how large your data set is.
+
+[Hejun Wong] 15:42:58
+So for this example, this exercise, we have about eight chunks together And we are running a MongoDB 7.0 version.
+
+[Hejun Wong] 15:43:12
+Okay, one thing we can do Before loading any data.
+
+[Hejun Wong] 15:43:18
+Would be to first pre-screen. Our empty sharded collection.
+
+[Hejun Wong] 15:43:25
+Okay, so when we do that we first have to have a good idea of the range of values that we can expect in the sharp key.
+
+[Hejun Wong] 15:43:35
+And once we define our different range actually defining the empty range is just a metadata change. It doesn't take up a lot of time when we run the command on our shuttered cluster.
+
+[Hejun Wong] 15:43:51
+So pre-spring will involve manually creating the chunks for each chart So once after we have created the chunks we will insert the documents with the key values that determines the boundaries of the chunks.
+
+[Hejun Wong] 15:44:11
+Okay, so we will usually run my sh.splitNet.
+
+[Hejun Wong] 15:44:20
+To pre-speak the data.
+
+[Hejun Wong] 15:44:31
+Okay, so we can run this. Command SH or split ed where we define the namespace and a query object we should specify the shut key Okay, so here's the range.
+
+[Hejun Wong] 15:44:49
+Okay, so you can define you can run this like let's say split that test for x70 And the next one can be x equals to 100 and So you can pre-speed your data first And this will avoid the initial suffering where you
+
+[Hejun Wong] 15:45:10
+Write data to the first chart. Okay, so this one once you pre-screen when the data comes in it will immediately write to the respective shots So this will help to save time.
+
+[Hejun Wong] 15:45:25
+And this also ensures that when your data insertion is in progress.
+
+[Hejun Wong] 15:45:31
+If you have three shots then actually all these write operations will be can be done in parallel into the three shots.
+
+[Hejun Wong] 15:45:40
+Yeah, sometime.
+
+[tao song] 15:45:42
+So if I pre-split the data which is bigger than the the auto balancing size limit will be auto balancing again
+
+[Hejun Wong] 15:45:56
+After that, it will… continue to balance out so if you run sh.status
+
+[Hejun Wong] 15:46:07
+You must go into your database first. Let me see if I'm in here.
+
+[Hejun Wong] 15:46:26
+Okay, under balancer you will see that currently enabled is yes.
+
+[Hejun Wong] 15:46:31
+Where does it currently running is no. Okay, so when you are inserting data you can first choose to disable your balancer. You can stop your balancer first And once you are done with the data insertion, then you can re-enable the balancer.
+
+[Hejun Wong] 15:46:49
+Another option is also your talents you can actually set a timing window so you can say oh My rule period is between 12 to 6 a.m. I want the data to be balanced during this period only.
+
+[Hejun Wong] 15:47:06
+So you can set a window and that's possible so So this is the command to enable your best balancing. This is a command sh.disable balancing is to disable the balancer.
+
+[Hejun Wong] 15:47:19
+Hmm.
+
+[Hejun Wong] 15:47:24
+Another… Option.
+
+[Hejun Wong] 15:47:29
+To quickly spread your data across a sharded cluster is actually this method called reshut Too shot.
+
+[Hejun Wong] 15:47:38
+Okay, so I will share this. Article with your you all can have a look because it's outside of this scope of today's course but i also want to share with you like this is one of the fastest way you can rebalance your data
+
+[Hejun Wong] 15:47:56
+But there are some caveats to it. And caveats is that you need.
+
+[Hejun Wong] 15:48:03
+In our space. Is all you need. 2.2 times the collection size per shot.
+
+[Hejun Wong] 15:48:11
+And your IELTS should be below 50% CPU utilization should be below 80%.
+
+[Hejun Wong] 15:48:17
+Okay, so you need to have all these conditions ready Before you can… implement this, reach out to Sharp.
+
+[Hejun Wong] 15:48:25
+Only available for 5.0 or greater because remember just now in one of the scratches we mentioned that Once you define the shard key, you cannot change.
+
+[Hejun Wong] 15:48:35
+So it's the same concept. Cost for 4.2 and 4.4, before 4.2, we cannot change a shark key.
+
+[Hejun Wong] 15:48:42
+But for 5.0 onwards you can change your shard key.
+
+[Hejun Wong] 15:48:48
+Okay, so this is another method to quickly spread your data across the shadow cluster.
+
+[Hejun Wong] 15:48:57
+Without waiting for the balancer.
+
+[Hejun Wong] 15:49:04
+Okay, so here are some of the pitfalls regarding sharding so The downside of sharding, your balancer requires additional IOPS.
+
+[Hejun Wong] 15:49:15
+So each key range that moves He actually performs the right three times.
+
+[Hejun Wong] 15:49:21
+You're right on. The first shot, you write a second shot.
+
+[Hejun Wong] 15:49:27
+You also need to delete the old data on the first shot. So all this will require IOPS.
+
+[Hejun Wong] 15:49:34
+And getting the deltas the changes in your data will take time in a busy system. So more read and write operations.
+
+[Hejun Wong] 15:49:43
+Once your key range are distributed if rights hit a random shot.
+
+[Hejun Wong] 15:49:48
+Then it is good. It is self-balanced. The other thing is also your first balancing of your data will take a while, can take a while.
+
+[Hejun Wong] 15:50:00
+So these are some of the downside of sharding. Another downside is Here in this example, it's a bit complex here.
+
+[Hejun Wong] 15:50:10
+But essentially. If let's say now i have choose date time field as my shark key.
+
+[Hejun Wong] 15:50:18
+Yes, I choose the underscore ID field. And we know that underscore ID, we can get timestamp
+
+[Hejun Wong] 15:50:31
+From the underscore ID field because it's an object ID. So we are able to retrieve the timestamp in which the document was created.
+
+[Hejun Wong] 15:50:40
+So this object ID is actually always in a certain direction.
+
+[Hejun Wong] 15:50:48
+Okay, so it will just keep getting the timestamp will just keep increasing in one direction.
+
+[Hejun Wong] 15:50:57
+And this is what we call Uh…
+
+[Hejun Wong] 15:51:05
+Mono Tommy.
+
+[Hejun Wong] 15:51:10
+I'm me fine.
+
+[Hejun Wong] 15:51:14
+And dependence.
+
+[Hejun Wong] 15:51:22
+So there's this within the ai You should avoid using monotonic monotonically increasing keys or fields Okay, so what this means that don't choose a field that is a date timestamp Because it just keeps increasing in a single direction.
+
+[Hejun Wong] 15:51:40
+Why avoid this? Is because let's say now you have this shardered castor.
+
+[Hejun Wong] 15:51:51
+Okay, so if your shard trees.
+
+[Hejun Wong] 15:51:56
+If now your shard key is a daytime field. Shatri will store all your latest data Which means that all your rights We'll just keep going to the Chatri the shot that stops all the latest information.
+
+[Hejun Wong] 15:52:13
+Which means that we will get a hot sharp issue all your most of your reads and writes will only target one shard.
+
+[Hejun Wong] 15:52:19
+So this is not recommended. Desai we don't recommend choosing a sharp key with a value that keeps increasing in one direction.
+
+[Hejun Wong] 15:52:34
+Okay, so this is…
+
+[Hejun Wong] 15:52:39
+What this slide is trying to say so don't choose a shark key there's increasing.
+
+[Hejun Wong] 15:52:46
+In one direction, if you have chosen a shark key that is increasing in one direction, what can you do So what you can do is actually hash that sharp key.
+
+[Hejun Wong] 15:52:58
+Because when you hash the shark key Then… Even if it's increasing in the one direction.
+
+[Hejun Wong] 15:53:05
+That hash value will be totally random. And once it's totally random, it will enable an even distribution of your data.
+
+[Hejun Wong] 15:53:15
+Okay, so when you create index. Create hashindex MongoT.
+
+[Hejun Wong] 15:53:22
+You just need to specify that it is hash.
+
+[Hejun Wong] 15:53:26
+Then when you shut the collection. Specify that you're using our hash index as well.
+
+[Hejun Wong] 15:53:35
+Okay, so when you create index and you specify that it's a hash index
+
+[Hejun Wong] 15:53:43
+Okay, so this is like the key reason why we have a hash index.
+
+[Hejun Wong] 15:53:48
+And it's to enable you to spread your data across your shutter cluster evenly.
+
+[Hejun Wong] 15:53:54
+But there is also some downsides of using a hash. Index is that when you query okay so here they say hashing index is ideal for shut keys we feel that change.
+
+[Hejun Wong] 15:54:08
+Monotonically like your object id fields or timestamp Okay, so this is ideal.
+
+[Hejun Wong] 15:54:15
+But the downside is that let's say now I perform a range query let's say like yesterday to today when I try to run this query.
+
+[Hejun Wong] 15:54:28
+My query will likely become a scatter and gather. Because now data is spread across all the charts evenly.
+
+[Hejun Wong] 15:54:35
+And they are not likely to be found within a single shot.
+
+[Hejun Wong] 15:54:39
+So that's like the downside of having a hash index and hash sharp key.
+
+[Hejun Wong] 15:54:45
+Okay so there's always like some pros and cons.
+
+[Hejun Wong] 15:54:49
+In some solutions.
+
+[Hejun Wong] 15:54:55
+The other common sharding challenges your data might be distributed badly Okay, we might get a hot shot issue where that shard is doing a lot more work as compared to the others.
+
+[Hejun Wong] 15:55:10
+Hash sharding avoids hot shards but pick up more resources overall Your shot key might be a random value and that might take out more resources also So these are some challenges.
+
+[Hejun Wong] 15:55:23
+Scaling out of your cluster can take a lot of resources So now if you are to at shots. All these new shots are initially empty and the balancer will need time to copy data over to them.
+
+[Hejun Wong] 15:55:37
+And depending on your data size This balancer can take days or weeks.
+
+[Hejun Wong] 15:55:42
+And you'll take out all your network, a lot of your network and IOps resources So these are some common sharding challenges.
+
+[Hejun Wong] 15:55:51
+So in the ideal scenario try to keep your it's always ideal to run a replica set the complexity is much less as compared to a shuttered cluster.
+
+[Hejun Wong] 15:56:05
+Here is an example of zone sharding. So if you have some data compliance requirements which requires you to store data for example all in for example in all your european users data has to be stored within europe then you can use zone-based charting.
+
+[Hejun Wong] 15:56:22
+Okay, so zombie shutting how we keep the data within the European regions is the same thing as what we have gone through you have to… shot based on a good shot key.
+
+[Hejun Wong] 15:56:36
+So your shark key will determine where your data will reside.
+
+[Hejun Wong] 15:56:40
+So if you were to choose like a if your documents have a continent or country feel then that will be part of your shark key.
+
+[Hejun Wong] 15:56:52
+Okay, so that's how we can implement zone-based sharding. Zone-based chatting.
+
+[Hejun Wong] 15:56:58
+Also is also used for One other thing that means if you know that a lot of your users are perhaps in Suze again.
+
+[Hejun Wong] 15:57:11
+And… most of your customers are from there.
+
+[Hejun Wong] 15:57:14
+Then you don't need… your hardware in other countries can be Less powerful.
+
+[Hejun Wong] 15:57:23
+Okay, so you can just juice you can just make the hardware In Switzerland a lot more powerful than the other shots Okay, so this is like independent shard scaling.
+
+[Hejun Wong] 15:57:38
+And Kearney. How to perform independent shuttle.
+
+[Hejun Wong] 15:57:43
+Scheduling is mainly through Terraform.
+
+[Hejun Wong] 15:57:48
+So there are two ways to do it. One is using go sdk one is using terraforms and one is using address admin API.
+
+[Hejun Wong] 15:57:59
+So… I've written a guide for my other customers last time.
+
+[Hejun Wong] 15:58:08
+So essentially, you can use Terraform to manage your clusters And because now the mls ui don't allow you to independently scale up a specific shot.
+
+[Hejun Wong] 15:58:20
+You will have to use like say terraform. Okay, so you first have to Import.
+
+[Hejun Wong] 15:58:31
+Your custard. Configuration into Terraform.
+
+[Hejun Wong] 15:58:35
+You need to generate a publicly and private key from atlas provide your analyst project id your customer name then you can import Terraform init and Terraform import Castor.
+
+[Hejun Wong] 15:58:48
+Okay, so once you import your cluster. You can get the information about your sharded cluster then you can… perform independent chart scaling.
+
+[Hejun Wong] 15:59:00
+So you can Let me show you some examples below.
+
+[Hejun Wong] 15:59:05
+So here
+
+[Hejun Wong] 15:59:10
+You will see that each chart has his own replication specs. Okay, so this is a shot one.
+
+[Hejun Wong] 15:59:18
+And this is like shot too. So Shark 1 has like m30 space and i can change m30 to m40 on this chart.
+
+[Hejun Wong] 15:59:30
+So I can scale up this shot only. And that helped save me some money tiny endless ui When you perform, you want to scale up your shots It will scale up all your different shots. So if you choose M40, all your different shots will become M40.
+
+[Hejun Wong] 15:59:47
+Okay, so design you can do like independent chart scaling Okay, same thing you can also tweak the IOPS for the specific chart that you are looking at.
+
+[Hejun Wong] 16:00:00
+So all these are still possible with independent shard scaling.
+
+[Hejun Wong] 16:00:07
+He's shouting for… to perform like parallel operations.
+
+[Hejun Wong] 16:00:12
+Here are some unusual use cases. But they can be powerful when used.
+
+[Hejun Wong] 16:00:19
+So just now we mentioned we want to avoid scatter and gather.
+
+[Hejun Wong] 16:00:24
+But if you want to utilize more machines to run certain aggregations or queries.
+
+[Hejun Wong] 16:00:32
+You actually can send out a scatter and gather query so you make use of all the different machines, compute power and help them ask them to help you run certain operations then when it comes back then when it comes back then
+
+[Hejun Wong] 16:00:47
+Just consolidate the results. So it's a bit unusual, but it can be powerful when you use Okay, so for a small number of analytic queries, the more CPU, the better.
+
+[Hejun Wong] 16:00:58
+Sometimes we run many shots on a single server and this is called micro sharding So microcharting effectively allows you to Use more than one call for a single query. What do we mean because now By default, when you have a normal database query.
+
+[Hejun Wong] 16:01:20
+It uses one call. And if you have many shots on the single server What this enables you to is you you can run that query.
+
+[Hejun Wong] 16:01:34
+Using more calls within your single server. Okay, so this is a bit unusual.
+
+[Hejun Wong] 16:01:41
+But it's something that people can do and people have tried.
+
+[Hejun Wong] 16:01:47
+Yeah. Okay, so… that marks the end of Part 2. Do you all have any questions for me before we start the kahoot?
+
+[tao song] 16:02:02
+Just now, why use the most CPU is? Better the macro shedding.
+
+[Hejun Wong] 16:02:10
+Uh… they sold certain aggregation stages, right?
+
+[Hejun Wong] 16:02:18
+They are not blocking stages. And when they're not blocking stages, you can potentially use or run them in parallel.
+
+[Hejun Wong] 16:02:28
+And that's why when you have more cpus And you can run the queries in parallel you will get faster operations.
+
+[Hejun Wong] 16:02:37
+Okay, so… if you look at aggregation.
+
+[Hejun Wong] 16:02:42
+Uh… your group your sort operations All these are blocking stages that means our need to wait for the previous stages to complete I consolidate all the results, then I can perform a group Okay, so same for like thought.
+
+[Hejun Wong] 16:03:06
+Okay, so all this. Blocking stages tend to be slower And you cannot parallel, you cannot run them in parallel.
+
+[Hejun Wong] 16:03:14
+Because you need to wait for all the data to come to you then you sort them or you group them Yeah, but for certain operations there's a possibility of you running your operation in parallel.
+
+[Hejun Wong] 16:03:32
+Yeah, for example, address search. Yeah, I saw search.
+
+[Hejun Wong] 16:03:49
+There's actually a concurrent parameter that you can set So we learn about Agriculture and we learn about dedicated search node.
+
+[Hejun Wong] 16:03:58
+So same thing if you are running a dollar search stage.
+
+[Hejun Wong] 16:04:04
+And you have dedicated search nodes. You can actually set concurrent to true.
+
+[Hejun Wong] 16:04:11
+So when you set concurrent to true it can actually make use of your dedicated search nodes to run right parallel queries.
+
+[Hejun Wong] 16:04:22
+Yeah, so in our aggregation framework, certain stages allows you to run your queries in parallel and that will give you better performance Yeah.
+
+[Hejun Wong] 16:04:37
+Any other questions?
+
+[Tony Lin] 16:04:41
+Um here um The default trunk size is 128 And B. So it's… to adjust the the size can improve the performance
+
+[Hejun Wong] 16:04:49
+Yeah.
+
+[Hejun Wong] 16:04:59
+It depends. So the key reason why I set 228 mb is because They don't want you to… beggars too much data at one time.
+
+[Hejun Wong] 16:05:11
+Because if you are to fetch too much data and balance it at one time, it might impact your other queries that are running in your cluster.
+
+[Hejun Wong] 16:05:21
+Yeah, so it is a value that you can change But what value to change is something that you might want to test it on your own infrastructure.
+
+[Hejun Wong] 16:05:32
+First before like tweaking in your production environment Yeah.
+
+[Tony Lin] 16:05:37
+So it's still done to change this size.
+
+[Hejun Wong] 16:05:41
+Hmm. Okay, so sometimes if you were to log a support ticket with our tech support.
+
+[Hejun Wong] 16:05:49
+And it's regarding like a slow query in your sharded cluster sometimes the support engineer might recommend you to tweak this value.
+
+[Hejun Wong] 16:05:58
+So it really depends on a case-by-case basis
+
+[Tony Lin] 16:05:59
+Oh.
+
+[Hejun Wong] 16:06:07
+Any other questions?
+
+[Tony Lin] 16:06:11
+Yes. In this example, the Sharkey use product ID and user id is the automator?
+
+[Hejun Wong] 16:06:19
+Hmm. Yes.
+
+[Hejun Wong] 16:06:24
+So ideally, you should always fall within the ESR guideline Okay, so remember when you define a shark key you still you have to define the index first Yeah, so when you define the index, always refer back to the ESR guideline.
+
+[Hejun Wong] 16:06:44
+Okay, one thing to note is The ESR guideline is a guideline and it's not the hard rule I have seen, I have a customer who is running like large amounts of data at high throughputs.
+
+[Tony Lin] 16:06:45
+Oh, I saw.
+
+[Hejun Wong] 16:07:01
+They have queries that they have queries run better on indexes, not following the ESR guideline.
+
+[Hejun Wong] 16:07:10
+But these are just like the minority. It's really like maybe of 95%. These are like the five percent But most of the time, the ESR guideline is the most optimal index.
+
+[Hejun Wong] 16:07:23
+Yeah. So when you create the shark key try to follow the ESR guideline also.
+
+[Tony Lin] 16:07:37
+Thank you.
+
+[Hejun Wong] 16:07:37
+Any other questions?
+
+[Kyo Cheng] 16:07:40
+Do you have any recommended mattress for scaling Mongol TV show.
+
+[Hejun Wong] 16:07:50
+In person you should see will be your data size So if you're single shots data is approaching 2 tb then you need to consider adding more shots. Okay, so it falls back down to the four four or five metrics.
+
+[Hejun Wong] 16:08:08
+Your IOPS, your RAM, your this your IELTS, your RAM, your CPU cost and your storage size.
+
+[Hejun Wong] 16:08:18
+Yeah. So always refer back to this for parameters.
+
+[Hejun Wong] 16:08:26
+Then you can use it to determine whether you need more shots.
+
+[Hejun Wong] 16:08:29
+But usually a key metric will be your data size. If it's approaching 2 tb then you should shots.
+
+[Hejun Wong] 16:08:38
+So that when the balancing act kicks in it doesn't have to balance out your data for too long a period.
+
+[Hejun Wong] 16:08:51
+Thank you.
+
+[Tony Lin] 16:08:55
+Oh, I have a question about the exercise the Iron the sh.
+
+[Tony Lin] 16:09:02
+Status and previously it showed many chunks But now it's show only two chunks So it keeps changing.
+
+[Hejun Wong] 16:09:03
+Hmm.
+
+[Hejun Wong] 16:09:17
+Can you try… to run a db to run a db Make sure you're in the test db db.fine foods.
+
+[Hejun Wong] 16:09:24
+Fine because sometimes they might refresh the data like they might refresh the environment Yeah, but your chunks might also change so first check whether the data is still present because right now when i log in when I try to find
+
+[Tony Lin] 16:09:32
+Oh.
+
+[Hejun Wong] 16:09:43
+I realized that there's no more data within my cost the environment has refreshed.
+
+[Tony Lin] 16:09:53
+Oh, okay.
+
+[Hejun Wong] 16:09:54
+Yeah, that's right there's some timer behind.
+
+[Tony Lin] 16:09:59
+Okay.
+
+[Tony Lin] 16:10:19
+Oh, so if I run the sh.status it will always show the all of the chunks
+
+[Hejun Wong] 16:10:30
+Yes.
+
+[Tony Lin] 16:10:30
+Because if there are many data then the trunk will be very long.
+
+[Hejun Wong] 16:10:41
+Yeah, that's right. And he will show you like for each channel is the range
+
+[Tony Lin] 16:10:48
+Hmm.
+
+[Hejun Wong] 16:10:51
+I'm not sure whether they were truncate Yeah, but as of now, I know that they will show like different ranges of your different chunks.
+
+[Tony Lin] 16:11:05
+Because I guess you will… how to read through the result.
+
+[Hejun Wong] 16:11:11
+Oh, yeah. Oh, the other thing is… Uh… Let me think.
+
+[Hejun Wong] 16:11:24
+Okay, so remember… it will keep changing also because like sometimes your your data when he's migrating it will just show the old data then once you've migrated you will short a new one, but you will have to delete it
+
+[Hejun Wong] 16:11:43
+Your changes your chunks change as well.
+
+[Hejun Wong] 16:11:48
+Yeah, so because your balance is always enabled, there is a chance that your data is always changing. It's always being moved around.
+
+[Hejun Wong] 16:11:57
+Hmm.
+
+[Tony Lin] 16:12:07
+How open the balancer? Bro.
+
+[Hejun Wong] 16:12:14
+How often… Can you hear me?
+
+[Tony Lin] 16:12:21
+Each hour or Each minute.
+
+[Hejun Wong] 16:12:26
+Is dependent on the threshold. So once it detects that it exceeds the 128 times how many shots you have.
+
+[Hejun Wong] 16:12:35
+Once it detects the biggest and Smallish shot has a difference.
+
+[Hejun Wong] 16:12:40
+Then you will start running the balancer. So can be any time. It's dependent on your data size between your largest and smallest.
+
+[Tony Lin] 16:12:45
+Hmm.
+
+[Hejun Wong] 16:12:51
+Shot.
+
+[Tony Lin] 16:12:57
+But basically, I don't need to Kenji to prevent it wrong in alcohol, right?
+
+[Hejun Wong] 16:13:06
+You can set the timing. Let me show you.
+
+[Hejun Wong] 16:13:26
+Okay, so you can schedule a balancing window Yeah.
+
+[Hejun Wong] 16:13:32
+So that… Okay, so because migration can impact your performance It is useful to ensure that your balance is only active on certain times and this is where you can set the active window.
+
+[Tony Lin] 16:13:39
+Hmm.
+
+[Hejun Wong] 16:13:47
+Okay, so you can switch to your config db ensure that you're If you stop, you can start in your denser.
+
+[Hejun Wong] 16:13:54
+Then here within settings you can set the start time and stop time.
+
+[Hejun Wong] 16:14:04
+Okay, so this is with respect to the UTC time zone so the GMT plus 0 times 0.
+
+[Hejun Wong] 16:14:15
+Let me share this.
+
+[Hejun Wong] 16:14:25
+Yeah, so you can set the balancing window times You can set the balancing window then your balancer will only work during this window
+
+[Tony Lin] 16:14:37
+I see.
+
+[Hejun Wong] 16:14:52
+Okay, any other questions?
+
+[Hejun Wong] 16:15:06
+If not, here's the kahoot quiz. For sharding part one and part two.
+
+[Hejun Wong] 16:16:09
+Oh, I saw Yogi connecting but this Okay, let's go.
+
+[Hejun Wong] 16:16:45
+All right. Oh, you got it correct.
+
+[Hejun Wong] 16:16:53
+Okay, Tony. In the lead.
+
+[Hejun Wong] 16:17:20
+Oh, I'm quite surprised that… of your got it correct.
+
+[Hejun Wong] 16:17:25
+Yeah, so the primary will hold the primary any unshuttered collections in their database by default.
+
+[Hejun Wong] 16:17:31
+In MongoDB 8.0, you have the ability to move your uncharted collections into other shots.
+
+[Hejun Wong] 16:17:43
+Okay, Tony's doing a lead.
+
+[Hejun Wong] 16:18:04
+Okay, close. Yes, the query analyzer is not part of the shadow cluster.
+
+[Hejun Wong] 16:18:08
+The rest, your MongoS, your config server as well as the different data shots are all part of the sharded clusters.
+
+[Hejun Wong] 16:18:16
+Polish Art Castello.
+
+[Hejun Wong] 16:18:22
+Tony's doing the lead.
+
+[Hejun Wong] 16:18:45
+That's very close. Yeah, so… The only wrong answer is your data type consistency.
+
+[Hejun Wong] 16:18:52
+So when you are deciding when you are deciding Shaki, a good shaky will be one with high cardinality high number of unique values one which when you run a query, will only target one or a few shots, so re-isolation
+
+[Hejun Wong] 16:19:10
+And if you want to distribute your rights. One that can help you distribute your rights.
+
+[Hejun Wong] 16:19:15
+Evenly across the cluster.
+
+[Hejun Wong] 16:19:20
+Oh, Santal has taken over the lead.
+
+[Hejun Wong] 16:19:47
+That's right. So balancing helps to distribute our data evenly across our shots.
+
+[Hejun Wong] 16:19:57
+Tony, back into the lead, all the DBs. I've taken over the top two positions
+
+[Hejun Wong] 16:20:32
+Oh, did somebody drop off? Yeah, so that's right.
+
+[Hejun Wong] 16:20:38
+For key ranges, your lower bound is included upper bound is excluded. So always remember Just now the example when we went through your key range one to four it only consists of one two and three.
+
+[Hejun Wong] 16:20:54
+Four is excluded.
+
+[Hejun Wong] 16:20:59
+Tony Styonavit.
+
+[Hejun Wong] 16:21:28
+That's right. So the… The balancer will move at a time it's 128 megabytes and this is a value that you can change and define.
+
+[Hejun Wong] 16:21:41
+Okay, so with that, that's the end of the Kahoot contest.
+
+[Hejun Wong] 16:21:45
+Congrats to Kiel. Yogi.
+
+[Hejun Wong] 16:21:55
+And Songtao. Coast match.
+
+[Hejun Wong] 16:22:04
+Okay, then let's come back to the deck. Which of these are reasons to use sharding?
+
+[Tony Lin] 16:22:19
+A.
+
+[Hejun Wong] 16:22:20
+Asco, right?
+
+[tao song] 16:22:25
+The… See?
+
+[Hejun Wong] 16:22:27
+Sorry. Yeah, C is correct.
+
+[tao song] 16:22:40
+E.
+
+[Hejun Wong] 16:22:41
+That's right. He's correct. Okay, so A, C, and E.
+
+[Hejun Wong] 16:22:47
+So you help wishardee can remove limitations related to hardware can enable zone sharding.
+
+[Hejun Wong] 16:22:57
+If you have a data compliance requirement. Or you want your users in certain regions to get fast access to your data You can also allow more tasks to run quickly now you have multiple shots with multiple I mean, and they will accept.
+
+[Hejun Wong] 16:23:17
+A higher write throughput. Second question, what are things to do when loading a large data set into MongoDB?
+
+[Hejun Wong] 16:23:42
+Asco, right?
+
+[tao song] 16:24:02
+Be.
+
+[Hejun Wong] 16:24:03
+B is all right. One more.
+
+[tao song] 16:24:12
+E.
+
+[Hejun Wong] 16:24:13
+That's right. He's all right. During the replication chapter, we learn about how setting our right concern to majority will ensure that we don't have a scenario where we silently lose data so setting the majority setting like content the majority ensures that
+
+[Hejun Wong] 16:24:34
+So there are two is. First, you can pre-split.
+
+[Hejun Wong] 16:24:39
+Your key range and that will enable you to write directly into that shot without going through the first shot.
+
+[Hejun Wong] 16:24:46
+And using the the answer to after that balance out the data so pre-sputting the keying just helps your write performance.
+
+[Hejun Wong] 16:24:58
+Then finally, you should also ensure that your data go is not the bottleneck.
+
+[Hejun Wong] 16:25:04
+Okay, so we should not disable replication. And we don't have to defeat the existing data within our collection.
+
+[Hejun Wong] 16:25:15
+Okay, finally, as a recap Shutting will require us to create optimized indexes And when you think about sharding, you will need to review your application queries.
+
+[Hejun Wong] 16:25:29
+So when you define a shark key Always choose to define a good shark key that will fit most of your application queries to ensure that they don't become scatter and gather queries.
+
+[Hejun Wong] 16:25:42
+Okay, so sharding is here to help remove hardware limitations. You can also do zone sharding if you have data compliance requirements manually balancing out your data will be a lot better As compared to giving it to the bank manager. So please pretend your data beforehand
+
+[Hejun Wong] 16:26:02
+When loading large amounts of data will be I do.
+
+[Hejun Wong] 16:26:07
+Okay, so with that, we have come to the end of today's training session. Do you have any questions for me?
+
+[Tony Lin] 16:26:18
+In some case we need to archive or delete data in the shorting case to anything we need to notice
+
+[Hejun Wong] 16:26:22
+Hmm.
+
+[Hejun Wong] 16:26:29
+Hmm. Okay, so when yeah thinking about archiving data.
+
+[Tony Lin] 16:26:39
+Hmm.
+
+[Hejun Wong] 16:26:39
+Be it a sharded cluster or replica. Always remember that digging many will incur a lot of it.
+
+[Hejun Wong] 16:26:46
+Your IOPS because you need to update all your indexes So if possible, if the application is able to right into a weekly or monthly or yearly collection and you can directly drop that collection it is a lot more efficient.
+
+[Hejun Wong] 16:27:04
+As compared to the gig many. And when you think of delete many, you will also think of TTL indexes.
+
+[Hejun Wong] 16:27:12
+So essentially, they are the same. But if they are If your TTL index is set to say 31st december at the end of the year and let's say 2359.
+
+[Hejun Wong] 16:27:27
+If you have a large amount of documents being deleted at that point in time.
+
+[Hejun Wong] 16:27:32
+It will eat up your resources at that point in time.
+
+[Hejun Wong] 16:27:36
+So when you're setting your TTL indexes. It's always good to spread the TTL expiry date in your law period so your period off-peak hours and also try to spread them out across i'd say… a few days or a few hours.
+
+[Hejun Wong] 16:27:57
+So that when the reaper comes in to delete your data they are not deleting too much documents at one time.
+
+[Hejun Wong] 16:28:05
+Then finally, you can also consider using online archive.
+
+[Hejun Wong] 16:28:11
+For MongoDB, oops sorry
+
+[Hejun Wong] 16:28:20
+Okay, so online archives will help you to move your infrequent or expired data to s3 If you are using aws or if you are using the other blob storage on Azure or GCP.
+
+[Hejun Wong] 16:28:36
+And what you can do is actually What it does is actually each time it runs, it only archives about 1.93 megabyte 1.93 gigabytes of data MX.
+
+[Hejun Wong] 16:28:54
+So it tries to archive large amount of data but it doesn't the idea is to not Although your cluster at that point in time Yeah, so if you compare TTL, an online archive.
+
+[Hejun Wong] 16:29:15
+I will recommend you to use online archive course it will eat less of your database resource when you want to archive data.
+
+[Hejun Wong] 16:29:23
+Okay, so if you have like say 100 million documents to archive.
+
+[Hejun Wong] 16:29:30
+What you can do is actually turn on online archive.
+
+[Hejun Wong] 16:29:34
+You can also set the archive window to run only in your off-peak hours.
+
+[Hejun Wong] 16:29:40
+Then after you are done, right? Archiving all the data away from your database.
+
+[Hejun Wong] 16:29:46
+Once it's in online archive, you can continue to query all this old data But you can also choose to purge all the data in your online archive.
+
+[Hejun Wong] 16:29:56
+So in this way you can in this way archive and purge your data without too much impact on your main database cluster.
+
+[Hejun Wong] 16:30:06
+Yeah so this is one.
+
+[Hejun Wong] 16:30:12
+Hmm. Okay, so this is what I recommend. Usually TTL indexes TTR indexes is quite expensive in terms of resources especially if you are deleting large amounts of documents at one time.
+
+[Tony Lin] 16:30:33
+Okay.
+
+[Hejun Wong] 16:30:35
+Then, after running all this division You might also want to consider running a compact operation to release all this blocks that were marked as reusable back to the operating system so that it doesn't like reflect storage size that is
+
+[Hejun Wong] 16:30:55
+Not reflective of their true storage size in your database. Yeah, but to do so, you can actually lock a support ticket with the support engineers and the support engineers can actually help you run the compact operation.
+
+[Hejun Wong] 16:31:14
+That's if you are running an alias cluster.
+
+[Tony Lin] 16:31:20
+Good.
+
+[tao song] 16:31:20
+But if you follow your suggestion, we better create like daily collection or weekly collection.
+
+[tao song] 16:31:27
+But you will increase the complexity of your application, right?
+
+[Hejun Wong] 16:31:31
+That's right. So the downside of this is that your application site will need to know I'm actually going to query against multiple corrections for like say uh for a date.
+
+[tao song] 16:31:39
+Yeah. Wish.
+
+[Hejun Wong] 16:31:45
+Like if you're doing a date range, there's a possibility that you need to query against two or three collections, which is not simple to do.
+
+[tao song] 16:31:54
+Yeah.
+
+[Hejun Wong] 16:31:54
+Yeah. So that's the downside. Unless you can ensure that your application is querying like exactly within that month.
+
+[Hejun Wong] 16:32:05
+Yeah like if I'm only going to query like March records, then if you are If you have created a money collection then you will know, okay, I'm just targeting the march collection. Mm-hmm.
+
+[Hejun Wong] 16:32:16
+So the complexity is actually on the developer side.
+
+[tao song] 16:32:22
+Okay.
+
+[Tony Lin] 16:32:27
+If I want to store time series data Is there any suggestion for it?
+
+[Hejun Wong] 16:32:33
+Hmm. Yeah, so time series data you can actually use a special collection called Time Series Collection.
+
+[Hejun Wong] 16:32:49
+Okay, so here oh yeah
+
+[Hejun Wong] 16:32:56
+You know maintenance a bit slow today.
+
+[Hejun Wong] 16:33:17
+So a time series collection is a special collection And we did this collection.
+
+[Hejun Wong] 16:33:25
+Your data is generally composed of three things. The time your metadata and the measurements.
+
+[Hejun Wong] 16:33:31
+So it can be like your stock data your whether it's a website visit us.
+
+[Hejun Wong] 16:33:41
+So you should use this special collection because how it handles and how it stores your data is slightly different from the normal database collection. It's optimized for time series data.
+
+[Hejun Wong] 16:33:56
+So when you query You will… see better performance.
+
+[Hejun Wong] 16:34:02
+Let me send you this link so that you can take a deeper look into it.
+
+[Hejun Wong] 16:34:26
+So here you can see that We use a special way to store the data.
+
+[Hejun Wong] 16:34:33
+Visual help to reduce our storage index sizes improve your query efficiency reduce our IELTS for our reoperations.
+
+[Hejun Wong] 16:34:43
+Yeah. In general, these are the benefits.
+
+[Tony Lin] 16:34:48
+If I want to.
+
+[Tony Lin] 16:34:53
+To this collection to… to share and How to say Which key should I choose?
+
+[Tony Lin] 16:35:04
+Borla Sharkey.
+
+[Hejun Wong] 16:35:08
+Oh, uh… Good question. Let me note your question down and
+
+[Hejun Wong] 16:35:18
+So if
+
+[Tony Lin] 16:35:18
+Because in this scenario usually is a range query And…
+
+[Hejun Wong] 16:35:23
+Yeah.
+
+[Tony Lin] 16:35:27
+And the data will be very big, so it's better to use sharding
+
+[Hejun Wong] 16:35:38
+Okay, these are our chat. I'll get back to you.
+
+[tao song] 16:35:40
+You can separate it to a different collection based on the time.
+
+[tao song] 16:35:45
+Like the application to handle it.
+
+[Tony Lin] 16:35:47
+Oh, okay, okay.
+
+[Hejun Wong] 16:35:51
+Yeah, that's one. But the complexity of the operations are quite high.
+
+[Tony Lin] 16:35:54
+Hmm.
+
+[tao song] 16:35:59
+That's hallway two for history DV now, right? You guys don't care about that range.
+
+[Hejun Wong] 16:35:59
+Especially if you're… Oh.
+
+[Tony Lin] 16:35:59
+Hmm.
+
+[tao song] 16:36:04
+Application handle with query from HTV. That's current practice.
+
+[Tony Lin] 16:36:08
+Yeah. Yes. So I'm looking for a better way.
+
+[Hejun Wong] 16:36:16
+Let me look within our internal thesis and documentation to see whether We have Albatalie.
+
+[Tony Lin] 16:36:23
+Yes, because I guess this is uh usually is a common case
+
+[Hejun Wong] 16:36:32
+Hmm.
+
+[tao song] 16:36:36
+I have another question. Is there any dashboard we can visualize to see whether the Chardin is balanced.
+
+[Hejun Wong] 16:36:37
+Okay.
+
+[tao song] 16:36:44
+Basement depreciation. Yeah, our last movie.
+
+[Hejun Wong] 16:36:47
+Uh…
+
+[Hejun Wong] 16:36:51
+I don't have a… shattered cluster running right now.
+
+[tao song] 16:36:57
+Whoever can see it, whether is there any feature
+
+[Hejun Wong] 16:37:06
+Okay, let me see whether I have a
+
+[Hejun Wong] 16:37:12
+Sensitive.
+
+[tao song] 16:37:16
+You can just show me the graph. Don't show the lead.
+
+[Hejun Wong] 16:37:20
+Yeah.
+
+[Hejun Wong] 16:37:24
+It is loading.
+
+[Hejun Wong] 16:37:35
+So Justin, your question is whether the balancer is running is it
+
+[tao song] 16:37:38
+I don't know whether we can see the shading is really balanced because normally we want to balance between different shots.
+
+[Hejun Wong] 16:37:47
+Oh.
+
+[tao song] 16:37:47
+So… for the movie fans i'm sure he if it's not evenly distributed from the data where we can see it's quite I'm biased, right?
+
+[Hejun Wong] 16:37:57
+Yeah, the first command to run that we usually run is our sh.status But let me see whether… Let me see whether…
+
+[tao song] 16:38:04
+So only can I use command line.
+
+[Hejun Wong] 16:38:12
+The… dashboard has any matrix.
+
+[Hejun Wong] 16:38:16
+That would be useful.
+
+[Hejun Wong] 16:38:25
+You know it's a bit slow today.
+
+[tao song] 16:38:29
+Because for things like we use for example kafka already is They always schedule whether the key is balanced between different Note. Yeah.
+
+[tao song] 16:38:41
+Kind of thing.
+
+[Hejun Wong] 16:38:42
+Okay.
+
+[Hejun Wong] 16:38:59
+I remember there's a metric. So let me try to find it.
+
+[Hejun Wong] 16:39:10
+For titles of Can I try to understand, like… are you building… Oh.
+
+[Hejun Wong] 16:39:19
+Like betting games and hosting them yourself or are you building for operators to run?
+
+[tao song] 16:39:27
+We do both.
+
+[Hejun Wong] 16:39:28
+Oh, okay.
+
+[Hejun Wong] 16:39:39
+So for like the say the biggest collection or biggest cluster what is like the throughput that you're currently seeing
+
+[Tony Lin] 16:39:52
+A lot slower we didn't put Critical, critical, critical.
+
+[tao song] 16:39:56
+I don't know. I think he asking SQL either. Is there our existing DB server or MongoDB?
+
+[Tony Lin] 16:39:57
+Visually. Sql. Sql.
+
+[Hejun Wong] 16:40:04
+Or can be any database. What's the typical, how many write operations per second or reoperations per second
+
+[Tony Lin] 16:40:17
+Let me check. 4,000.
+
+[Hejun Wong] 16:40:30
+Well, my… internet is really super slow today.
+
+[tao song] 16:40:37
+It's okay. I think maybe you can show me tomorrow also fine.
+
+[Tony Lin] 16:40:38
+And… The… For batch request, it's about 6,000.
+
+[Hejun Wong] 16:40:40
+Yeah, maybe I try to find it later and I'll show you all tomorrow. I can show you tomorrow.
+
+[Hejun Wong] 16:40:45
+Hmm.
+
+[Hejun Wong] 16:40:50
+6,000. Okay.
+
+[Hejun Wong] 16:41:04
+Okay, any other questions?
+
+[Hejun Wong] 16:41:09
+For tomorrow, we will be going through… They're 400.
+
+[Hejun Wong] 16:41:17
+Okay, then next week we'll do the They're 500.
+
+[Hejun Wong] 16:41:22
+Yeah so for 500 you will be useful for developers.
+
+[Hejun Wong] 16:41:28
+For DBAs, it'll be useful if cost aside for a lot of my customers Sometimes the deaths are not trained in MongoDB.
+
+[Hejun Wong] 16:41:39
+And when they create a schema that is not optimized to like how MongoDB operates then it can also impact the MongoDB service performance. So it is useful for the DPAs to also understand What does a good database schema look like?
+
+[Hejun Wong] 16:41:56
+On MongoDB Zen. Yeah, and actually that's the reason why I recommended They're 500.
+
+[Tony Lin] 16:41:59
+Hmm.
+
+[Tony Lin] 16:42:05
+Hmm.
+
+[Hejun Wong] 16:42:05
+But I think y'all can see my internet now is like super slow i don't know why is not showing from the page.
+
+[Hejun Wong] 16:42:14
+But tomorrow we'll go through their 400 first then next week we'll do their 500.
+
